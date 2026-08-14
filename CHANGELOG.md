@@ -309,8 +309,10 @@ browser build to verify).
 **In short:** the local **WeKan MCP** grows from nine basic operations to 49
 permission-aware tools covering the board, list, swimlane, card and
 collaboration lifecycle, with server-side search and guarded destructive
-actions. Alongside it are four reports from admins who could not tell what their
-own WeKan was doing. Clicking a **minicard again did not close the card** it had
+actions. Its full phase matrix is unit-tested and live-audited, including safe
+handling when a disabled REST API redirects a write to the HTML app. Alongside
+it are four reports from admins who could not tell what their own WeKan was
+doing. Clicking a **minicard again did not close the card** it had
 opened -
 the toggle was there and had a test, and it was closing the wrong thing, so it
 was the one part of this that nobody could see was broken. A snap **waiting for
@@ -362,6 +364,8 @@ from the provenance each build job records.
 
 This release adds the following new feature:
 
+**Local MCP** - permission-aware WeKan automation through MCP and the REST API.
+
 <details>
 <summary><a href="https://github.com/wekan/wekan/commit/967684a82">Expands the local WeKan MCP from nine basic operations to 49 permission-aware tools</a>. Thanks to khuongsatou and xet7.</summary>
 
@@ -384,6 +388,28 @@ own board now creates a distinct list, moving one across boards archives the
 emptied source, and copying a card rejects a list or swimlane from another
 board. Unit, negative, route-wiring and disposable-board smoke tests pin the
 49-tool manifest and cleanup contract.
+
+</details>
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/4512e7d72">Rejects redirected REST writes and verifies every WeKan MCP phase against a live server</a>. Thanks to khuongsatou and xet7.</summary>
+
+A disposable-board audit exercised 45 representative REST requests across the
+49-tool surface, including board, list, swimlane and card lifecycle operations,
+collaboration data and server-side search, then deleted both test boards. It
+found two integration gaps that mocked route tests could not expose.
+
+When the REST API was disabled, `/api/*` redirected to `/`. The HTTP client
+followed that redirect, changed a `POST` into a `GET`, and could mistake the
+HTML landing page for a successful write. API redirects are now rejected as
+structured errors, with a message to check the base URL and REST setting; safe
+reads retain their bounded transient retries and writes are still sent once.
+
+The live schema also showed that a list's `wipLimit` is an object, not the bare
+integer accepted by the MCP input. The adapter now maps zero to a disabled
+limit and a positive integer to an enabled hard limit. Regression tests assert
+the five disjoint implementation stages, all 49 ordered tools, destructive
+confirmations, route contracts, redirect policy and WIP mapping.
 
 </details>
 

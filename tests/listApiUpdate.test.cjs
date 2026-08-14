@@ -89,6 +89,7 @@ test('keeps starred working (including the falsy false value)', () => {
 
 test('keeps wipLimit working', () => {
   assert.strictEqual(buildListPutUpdate({ wipLimit: 5 }, normalizeColor).set.wipLimit, 5);
+  assert.strictEqual(buildListPutUpdate({ wipLimit: 0 }, normalizeColor).set.wipLimit, 0);
 });
 
 test('sets multiple valid fields at once', () => {

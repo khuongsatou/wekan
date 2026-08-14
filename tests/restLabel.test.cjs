@@ -13,7 +13,11 @@
 // for bad input — never throwing, never leaving the caller without something to send.
 
 const assert = require('assert');
-const { buildBoardLabel, DEFAULT_LABEL_COLOR } = require('../models/lib/restLabel');
+const {
+  buildBoardLabel,
+  buildBoardLabelUpdate,
+  DEFAULT_LABEL_COLOR,
+} = require('../models/lib/restLabel');
 
 // A representative slice of LABEL_COLORS (config/const.js ALLOWED_COLORS).
 const COLORS = ['white', 'green', 'yellow', 'orange', 'red', 'blue'];
@@ -91,6 +95,48 @@ test('never throws for a range of odd inputs', () => {
     const r = buildBoardLabel(v, COLORS);
     assert.ok(r && typeof r.ok === 'boolean', 'result must always have a boolean ok');
   });
+});
+
+// --- update-one contract used by the MCP label tools -----------------------
+test('updates one label name/color and preserves the other labels', () => {
+  const labels = [
+    { _id: 'a', name: 'Bug', color: 'red' },
+    { _id: 'b', name: 'Docs', color: 'blue', extra: true },
+  ];
+  const r = buildBoardLabelUpdate(
+    labels,
+    'b',
+    { name: 'Documentation', color: 'green' },
+    COLORS,
+  );
+  assert.strictEqual(r.ok, true);
+  assert.deepStrictEqual(r.label, {
+    _id: 'b',
+    name: 'Documentation',
+    color: 'green',
+    extra: true,
+  });
+  assert.strictEqual(r.labels[0], labels[0]);
+  assert.deepStrictEqual(labels[1], {
+    _id: 'b', name: 'Docs', color: 'blue', extra: true,
+  }, 'the helper must not mutate the cached board document');
+});
+
+test('partial label updates preserve the omitted field', () => {
+  const labels = [{ _id: 'a', name: 'Bug', color: 'red' }];
+  const r = buildBoardLabelUpdate(labels, 'a', { color: 'blue' }, COLORS);
+  assert.strictEqual(r.ok, true);
+  assert.deepStrictEqual(r.label, { _id: 'a', name: 'Bug', color: 'blue' });
+});
+
+test('label updates reject missing labels, empty patches and invalid colors', () => {
+  const labels = [{ _id: 'a', name: 'Bug', color: 'red' }];
+  assert.strictEqual(buildBoardLabelUpdate(labels, 'missing', {}, COLORS).status, 404);
+  assert.strictEqual(buildBoardLabelUpdate(labels, 'a', {}, COLORS).status, 400);
+  assert.strictEqual(
+    buildBoardLabelUpdate(labels, 'a', { color: 'chartreuse' }, COLORS).status,
+    400,
+  );
 });
 
 console.log(`\n${passed} tests passed.`);

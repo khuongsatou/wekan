@@ -7,9 +7,18 @@ import { add, now } from '/imports/lib/dateUtils';
 import { Authentication } from '/server/authentication';
 import { sendJsonResult } from '/server/apiMiddleware';
 import { allowIsBoardMember, allowIsBoardMemberCommentOnly, allowIsBoardMemberWithWriteAccess, computeSortForIndex, mergeLabelIds, canAssignCardMember, isCardDateClear } from '/server/lib/utils';
-import { computeTopSort, normalizeMoveParams, parseCardDate } from '/server/lib/restCardHelpers';
+import {
+  computeTopSort,
+  hasRestField,
+  normalizeMoveParams,
+  parseCardDate,
+} from '/server/lib/restCardHelpers';
 const { coerceRestArrayParam } = require('/server/lib/restArrayParam');
 const { applyCardBoardConsistency } = require('/server/lib/cardBoardConsistency');
+const {
+  buildCardSearchSelector,
+  parseCardSearchParams,
+} = require('/models/lib/restCardSearch');
 import { titleChanged } from '/server/lib/titleChangeActivity';
 import { descriptionChanged } from '/server/lib/descriptionChangeActivity';
 import { buildDeleteCardActivity } from '/server/lib/deleteActivities';
@@ -1124,7 +1133,7 @@ WebApp.handlers.put(
       );
       updated = true;
     }
-    if (req.body.sort) {
+    if (hasRestField(req.body, 'sort')) {
       await Cards.direct.updateAsync(
         { _id: paramCardId, listId: paramListId, boardId: paramBoardId, archived: false },
         { $set: { sort: req.body.sort } },
@@ -1144,14 +1153,14 @@ WebApp.handlers.put(
       );
       updated = true;
     }
-    if (req.body.description) {
+    if (hasRestField(req.body, 'description')) {
       await Cards.direct.updateAsync(
         { _id: paramCardId, listId: paramListId, boardId: paramBoardId, archived: false },
         { $set: { description: req.body.description } },
       );
       updated = true;
     }
-    if (req.body.color) {
+    if (hasRestField(req.body, 'color')) {
       await Cards.direct.updateAsync(
         { _id: paramCardId, listId: paramListId, boardId: paramBoardId, archived: false },
         { $set: { color: req.body.color } },
@@ -1193,7 +1202,7 @@ WebApp.handlers.put(
       );
       updated = true;
     }
-    if (req.body.labelIds) {
+    if (hasRestField(req.body, 'labelIds')) {
       let newlabelIds = req.body.labelIds;
       if (typeof newlabelIds === 'string') {
         newlabelIds = newlabelIds === '' ? null : [newlabelIds];
@@ -1838,15 +1847,32 @@ WebApp.handlers.post(
     const paramCardId = req.params.cardId;
     await Authentication.checkBoardWriteAccess(req.userId, paramBoardId);
 
-    const toBoardId = req.body.toBoardId || paramBoardId;
-    const toSwimlaneId = req.body.toSwimlaneId;
-    const toListId = req.body.toListId || paramListId;
+    const body = req.body || {};
+    const toBoardId = body.toBoardId || paramBoardId;
+    const toSwimlaneId = body.toSwimlaneId;
+    const toListId = body.toListId || paramListId;
     if (!toSwimlaneId) {
       sendJsonResult(res, { code: 400, data: { error: 'toSwimlaneId is required' } });
       return;
     }
     // Require write access on the destination board too (may differ from source).
     await Authentication.checkBoardWriteAccess(req.userId, toBoardId);
+    const [toList, toSwimlane] = await Promise.all([
+      ReactiveCache.getList({ _id: toListId, boardId: toBoardId, archived: false }),
+      ReactiveCache.getSwimlane({
+        _id: toSwimlaneId,
+        boardId: toBoardId,
+        archived: false,
+      }),
+    ]);
+    if (!toList) {
+      sendJsonResult(res, { code: 400, data: { error: 'Destination list not found' } });
+      return;
+    }
+    if (!toSwimlane) {
+      sendJsonResult(res, { code: 400, data: { error: 'Destination swimlane not found' } });
+      return;
+    }
 
     const card = await ReactiveCache.getCard({
       _id: paramCardId,
@@ -1860,12 +1886,18 @@ WebApp.handlers.post(
 
     const newId = await card.copy(toBoardId, toSwimlaneId, toListId);
 
-    if (Object.prototype.hasOwnProperty.call(req.body, 'position')) {
+    if (Object.prototype.hasOwnProperty.call(body, 'position')) {
       const siblings = await ReactiveCache.getCards(
-        { listId: toListId, archived: false, _id: { $ne: newId } },
+        {
+          boardId: toBoardId,
+          listId: toListId,
+          swimlaneId: toSwimlaneId,
+          archived: false,
+          _id: { $ne: newId },
+        },
         { sort: ['sort'] },
       );
-      const newSort = computeSortForIndex(siblings, Number(req.body.position));
+      const newSort = computeSortForIndex(siblings, Number(body.position));
       await Cards.direct.updateAsync({ _id: newId }, { $set: { sort: newSort } });
     }
 
@@ -1921,5 +1953,116 @@ WebApp.handlers.get('/api/user/cards', async function(req, res) {
       members: card.members || [],
       assignees: card.assignees || [],
     })),
+  });
+});
+
+// Paginated server-side card search for API/MCP clients. The board scope is
+// derived from the authenticated user's active memberships/shares, not supplied
+// by the client. Assigned-only board roles retain their per-card restriction.
+WebApp.handlers.get('/api/search/cards', async function(req, res) {
+  if (!req.userId) {
+    sendJsonResult(res, { code: 401, data: { error: 'Unauthorized' } });
+    return;
+  }
+
+  const url = new URL(req.url, 'http://localhost');
+  const parsed = parseCardSearchParams(url.searchParams);
+  if (!parsed.ok) {
+    sendJsonResult(res, { code: 400, data: { error: parsed.error } });
+    return;
+  }
+  const params = parsed.value;
+  const requestedBoardId = params.boardId;
+
+  // A global search is limited to boards related to the user. An explicitly
+  // requested public board remains searchable because public boards are meant
+  // to be opened directly. Private boards that are not visible return 403.
+  let boards = await Boards.userBoards(
+    req.userId,
+    false,
+    requestedBoardId ? { _id: requestedBoardId } : {},
+    { fields: { _id: 1, members: 1 } },
+    { includePublic: !!requestedBoardId },
+  );
+  if (requestedBoardId && boards.length === 0) {
+    const siteAdmin = await ReactiveCache.getUser({ _id: req.userId, isAdmin: true });
+    const board = siteAdmin ? await ReactiveCache.getBoard(requestedBoardId) : null;
+    if (board && !board.archived && (!board.type || board.type === 'board')) {
+      boards = [board];
+    } else {
+      sendJsonResult(res, {
+        code: 403,
+        data: { error: 'Board is not visible to the authenticated user' },
+      });
+      return;
+    }
+  }
+
+  const boardIds = (boards || []).map(board => board._id);
+  const assignedOnlyBoardIds = (boards || [])
+    .filter(board => {
+      const membership = (board.members || []).find(
+        member => member.userId === req.userId && member.isActive,
+      );
+      return !!(
+        membership &&
+        (membership.isNormalAssignedOnly ||
+          membership.isCommentAssignedOnly ||
+          membership.isReadAssignedOnly)
+      );
+    })
+    .map(board => board._id);
+
+  const selector = buildCardSearchSelector({
+    boardIds,
+    assignedOnlyBoardIds,
+    userId: req.userId,
+    query: params.query,
+    listId: params.listId,
+    swimlaneId: params.swimlaneId,
+    memberId: params.memberId,
+    assigneeId: params.assigneeId,
+    labelId: params.labelId,
+    archived: params.archived,
+    dueFrom: params.dueFrom,
+    dueTo: params.dueTo,
+  });
+
+  const cursor = Cards.find(selector, {
+    fields: {
+      _id: 1,
+      title: 1,
+      description: 1,
+      boardId: 1,
+      listId: 1,
+      swimlaneId: 1,
+      sort: 1,
+      archived: 1,
+      labelIds: 1,
+      members: 1,
+      assignees: 1,
+      receivedAt: 1,
+      startAt: 1,
+      dueAt: 1,
+      endAt: 1,
+      modifiedAt: 1,
+    },
+    sort: { modifiedAt: -1, _id: 1 },
+    skip: params.offset,
+    limit: params.limit,
+  });
+  const [items, total] = await Promise.all([
+    cursor.fetchAsync(),
+    Cards.find(selector).countAsync(),
+  ]);
+  sendJsonResult(res, {
+    code: 200,
+    data: {
+      items,
+      total,
+      limit: params.limit,
+      offset: params.offset,
+      hasMore: params.offset + items.length < total,
+    },
   });
 });

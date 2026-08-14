@@ -2,6 +2,7 @@
 import { expect } from 'chai';
 import {
   computeTopSort,
+  hasRestField,
   normalizeMoveParams,
   parseCardDate,
 } from '../restCardHelpers';
@@ -16,6 +17,21 @@ import {
  * The helpers are Meteor-free so these tests run standalone (mocha + chai).
  */
 describe('REST card fixes helpers', function() {
+  describe('hasRestField', function() {
+    it('keeps explicit falsy values available to PATCH-like handlers', function() {
+      expect(hasRestField({ description: '' }, 'description')).to.equal(true);
+      expect(hasRestField({ labelIds: [] }, 'labelIds')).to.equal(true);
+      expect(hasRestField({ sort: 0 }, 'sort')).to.equal(true);
+      expect(hasRestField({ enabled: false }, 'enabled')).to.equal(true);
+    });
+
+    it('rejects omitted fields and nullish request bodies', function() {
+      expect(hasRestField({}, 'description')).to.equal(false);
+      expect(hasRestField(null, 'description')).to.equal(false);
+      expect(hasRestField(undefined, 'description')).to.equal(false);
+    });
+  });
+
   // --- #5399: move-to-list must land the card on TOP of the destination ---
   describe('computeTopSort', function() {
     it('returns one less than the current minimum so the card lands on top', function() {

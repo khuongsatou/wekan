@@ -4,6 +4,19 @@
 //   #5398 normalizeMoveParams  - one consistent set of board-move params
 //   #5399 computeTopSort        - sort value that lands a card on TOP of a list
 //   #5537 parseCardDate         - parse an ISO date string into a Date that persists
+//   MCP card edits              - distinguish an omitted field from an explicit empty value
+
+/**
+ * REST PATCH-like updates must distinguish an omitted field from a valid falsy
+ * value such as an empty description, an empty label array, sort 0, or false.
+ *
+ * @param {object} body request body
+ * @param {string} field field name
+ * @returns {boolean} whether the caller explicitly supplied the field
+ */
+export function hasRestField(body, field) {
+  return !!body && Object.prototype.hasOwnProperty.call(body, field);
+}
 
 /**
  * #5399 Moving a card to another list via the API must put it on TOP of the

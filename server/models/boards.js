@@ -13,7 +13,7 @@ import {
   planQuitBoard,
   planAcceptInvite,
 } from '/models/lib/boardInvites';
-import { buildBoardLabel } from '/models/lib/restLabel';
+import { buildBoardLabel, buildBoardLabelUpdate } from '/models/lib/restLabel';
 import { LABEL_COLORS } from '/models/metadata/colors';
 import { filterUserBoards } from '/server/lib/boardListFilter';
 import { ReactiveCache } from '/imports/reactiveCache';
@@ -1040,6 +1040,71 @@ WebApp.handlers.put('/api/boards/:boardId/labels', async function(req, res) {
       data: { error: error.reason || error.message || 'Error' },
     });
   }
+});
+
+// Update one board label without forcing API clients to replace the board's
+// complete labels array. Board-admin permission matches label creation above.
+WebApp.handlers.put('/api/boards/:boardId/labels/:labelId', async function(req, res) {
+  const boardId = req.params.boardId;
+  const labelId = req.params.labelId;
+  const board = await ReactiveCache.getBoard(boardId);
+  if (!req.userId) {
+    sendJsonResult(res, { code: 401, data: { error: 'Unauthorized' } });
+    return;
+  }
+  if (!board) {
+    sendJsonResult(res, { code: 404, data: { error: 'Board not found' } });
+    return;
+  }
+  const isBoardAdmin = allowIsBoardAdmin(req.userId, board);
+  const isSiteAdmin = isBoardAdmin
+    ? true
+    : !!(await ReactiveCache.getUser({ _id: req.userId, isAdmin: true }));
+  if (!isBoardAdmin && !isSiteAdmin) {
+    sendJsonResult(res, { code: 403, data: { error: 'Only a board admin can edit labels' } });
+    return;
+  }
+
+  const built = buildBoardLabelUpdate(board.labels, labelId, req.body, LABEL_COLORS);
+  if (!built.ok) {
+    sendJsonResult(res, { code: built.status || 400, data: { error: built.error } });
+    return;
+  }
+  await Boards.updateAsync({ _id: boardId }, { $set: { labels: built.labels } });
+  sendJsonResult(res, {
+    code: 200,
+    data: built.label,
+  });
+});
+
+// Removing through the collection (not `.direct`) deliberately keeps the
+// Boards.after.update hook that removes the deleted label id from every card.
+WebApp.handlers.delete('/api/boards/:boardId/labels/:labelId', async function(req, res) {
+  const boardId = req.params.boardId;
+  const labelId = req.params.labelId;
+  const board = await ReactiveCache.getBoard(boardId);
+  if (!req.userId) {
+    sendJsonResult(res, { code: 401, data: { error: 'Unauthorized' } });
+    return;
+  }
+  if (!board) {
+    sendJsonResult(res, { code: 404, data: { error: 'Board not found' } });
+    return;
+  }
+  const isBoardAdmin = allowIsBoardAdmin(req.userId, board);
+  const isSiteAdmin = isBoardAdmin
+    ? true
+    : !!(await ReactiveCache.getUser({ _id: req.userId, isAdmin: true }));
+  if (!isBoardAdmin && !isSiteAdmin) {
+    sendJsonResult(res, { code: 403, data: { error: 'Only a board admin can delete labels' } });
+    return;
+  }
+  if (!(board.labels || []).some(label => label._id === labelId)) {
+    sendJsonResult(res, { code: 404, data: { error: 'Label not found' } });
+    return;
+  }
+  await Boards.updateAsync({ _id: boardId }, { $pull: { labels: { _id: labelId } } });
+  sendJsonResult(res, { code: 200, data: { _id: labelId, deleted: true } });
 });
 
 // Issue #3062: read/update the board-level "Card Settings" (the allows* toggles

@@ -50,18 +50,41 @@ nhung client khong giu MCP session header tot.
 
 ## Tool List
 
-- `wekan_health_status` - kiem tra MCP co ket noi duoc den WeKan REST API khong.
-- `list_boards` - liet ke board ma user server-side nhin thay, bao gom private
-  board cua user. MCP dung `/api/users/:userId/boards` cho viec nay; WeKan
-  `/api/boards` chi list public boards.
-- `get_board` - doc chi tiet mot board theo `board_id`.
-- `create_board` - tao board moi.
-- `list_swimlanes` - liet ke swimlane trong board.
-- `list_lists` - liet ke list trong board.
-- `create_list` - tao list trong board.
-- `list_cards` - liet ke card trong list.
-- `create_card` - tao card trong list. Neu agent khong truyen
-  `swimlane_id`, MCP tu lay default swimlane cua board.
+Server version 0.3 exposes 49 tools. `wekan_health_status` checks runtime and
+authentication before any board work.
+
+Boards:
+
+- `list_boards`, `get_board`, `create_board`, `update_board`, `copy_board`,
+  `delete_board`.
+
+Lists and swimlanes:
+
+- `list_lists`, `get_list`, `create_list`, `update_list`, `copy_list`,
+  `move_list`, `delete_list`.
+- `list_swimlanes`, `get_swimlane`, `create_swimlane`, `update_swimlane`,
+  `copy_swimlane`, `move_swimlane`, `delete_swimlane`.
+
+Cards:
+
+- `list_cards`, `get_card`, `create_card`, `update_card`, `move_card`,
+  `archive_card`, `unarchive_card`, `copy_card`, `delete_card`.
+- `search_cards` performs permission-aware server-side search with filters and
+  pagination. It does not scan board/list/card data from the MCP process.
+
+Collaboration:
+
+- Users and members: `list_users`, `list_board_members`, `add_board_member`,
+  `set_board_member_role`, `remove_board_member`.
+- Labels: `list_labels`, `create_label`, `update_label`, `delete_label`,
+  `set_card_labels`.
+- Comments: `list_comments`, `get_comment`, `create_comment`, `delete_comment`.
+- Checklists: `list_checklists`, `get_checklist`, `create_checklist`,
+  `delete_checklist`.
+
+`delete_*` and `remove_board_member` require `confirm=true`. Prefer
+`archive_card` when the card may need to be restored. WeKan REST permissions
+remain authoritative; MCP does not elevate a read-only or comment-only user.
 
 ## Common Workflow
 
@@ -142,7 +165,22 @@ Response quan trong:
 }
 ```
 
-5. Xac minh card:
+5. Update, move or archive the card:
+
+```json
+{
+  "name": "update_card",
+  "arguments": {
+    "board_id": "...",
+    "list_id": "...",
+    "card_id": "...",
+    "description": "Implementation notes",
+    "due_at": "2026-08-20T09:00:00.000Z"
+  }
+}
+```
+
+6. Xac minh card:
 
 ```json
 {
@@ -198,6 +236,10 @@ Response quan trong:
 
 Date fields should be ISO-like date strings accepted by WeKan, for example
 `2026-08-10T09:00:00.000Z`.
+
+`search_cards` accepts `query`, `board_id`, `list_id`, `swimlane_id`,
+`member_id`, `assignee_id`, `label_id`, `archived`, `due_from`, `due_to`,
+`limit` (1-100), and `offset` (0-10000).
 
 ## Raw HTTP Smoke Tests
 
@@ -358,10 +400,20 @@ Also call `list_boards` when credentials are configured:
 python test_client.py --call-boards
 ```
 
+Run the disposable-board CRUD smoke only against a test instance. It exercises
+representative board/list/swimlane/card, label, comment, checklist, search, copy,
+move, archive and delete paths, then requires successful cleanup:
+
+```sh
+python test_client.py --live-crud
+```
+
+The smoke test also fails if the server does not expose exactly 49 tools.
+
 `list_boards` should include private boards owned by or shared with the
 authenticated user. If it returns `0` while `get_board` by a known private board
 id works, rebuild/restart the MCP server so it is using
-`/api/users/:userId/boards` instead of the public-only `/api/boards` endpoint.
+`/api/users/:userId/boards` instead. `/api/boards` chi list public boards.
 
 ## Docker Runtime
 

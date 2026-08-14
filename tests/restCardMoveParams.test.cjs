@@ -17,7 +17,7 @@ const fs = require('fs');
 const path = require('path');
 
 (async () => {
-  const { normalizeMoveParams, computeTopSort } = await import(
+  const { normalizeMoveParams, computeTopSort, hasRestField } = await import(
     '../server/lib/restCardHelpers.js'
   );
 
@@ -68,6 +68,28 @@ const path = require('path');
     assert.strictEqual(computeTopSort([]), 0);
     assert.strictEqual(computeTopSort(undefined), 0);
     assert.strictEqual(computeTopSort([NaN, 'x', null]), 0);
+  });
+
+  // ── PATCH-like edits: explicit falsy values are real updates ──────────────
+  check('MCP card edit keeps explicit empty values and sort zero', () => {
+    assert.strictEqual(hasRestField({ description: '' }, 'description'), true);
+    assert.strictEqual(hasRestField({ labelIds: [] }, 'labelIds'), true);
+    assert.strictEqual(hasRestField({ color: '' }, 'color'), true);
+    assert.strictEqual(hasRestField({ sort: 0 }, 'sort'), true);
+  });
+  check('MCP card edit distinguishes omitted fields and nullish bodies', () => {
+    assert.strictEqual(hasRestField({}, 'description'), false);
+    assert.strictEqual(hasRestField(null, 'description'), false);
+    assert.strictEqual(hasRestField(undefined, 'description'), false);
+  });
+
+  check('MCP card edit wiring checks presence rather than truthiness', () => {
+    const src = fs.readFileSync(
+      path.join(__dirname, '..', 'server', 'models', 'cards.js'), 'utf8');
+    for (const field of ['sort', 'description', 'color', 'labelIds']) {
+      assert.ok(src.includes(`hasRestField(req.body, '${field}')`),
+        `${field} must accept an explicit falsy value`);
+    }
   });
 
   // ── source guard: the edit-card handler re-homes via cardMove on a board move

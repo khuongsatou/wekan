@@ -306,22 +306,25 @@ browser build to verify).
 
 # Upcoming WeKan ® release
 
-**In short:** four reports from admins who could not tell what their own WeKan
-was doing. Clicking a **minicard again did not close the card** it had opened -
-the toggle was there and had a test, and it was closing the wrong thing, so it
-was the one part of this that nobody could see was broken. A snap **waiting for
-its database** answered nothing at all on the web port, so an upgrade that left
-the database down looked like WeKan itself loading forever; the wait is a page
-now, with the commands that say why, and it carries the product name and the
-schema-upgrade dashboard's colours. The **Admin Panel reports** were full of
-things that never happened - an ordinary restart written up as a crash (and,
-because of the same bug, actually turned into minutes of downtime), and a
-reverse proxy written up as a spoofing attempt. And a snap serving
-**the older of its two copies of the data** was told "No problems detected",
-because the status report reads only the database WeKan is connected to and
-never said WHICH one that is; it now ends with a section that does, and names
-the two recovery commands. Below that: two open issues that the current code
-already answers, closed by reading it.
+**In short:** **Apple Glass Pastel v2** carries one coherent, responsive visual
+system from login through the first header, All Boards, Admin Panel and board,
+with accessible focus, reduced-motion and low-cost glass fallbacks built in.
+Alongside it are four reports from admins who could not tell what their own
+WeKan was doing. Clicking a **minicard again did not close the card** it had
+opened - the toggle was there and had a test, and it was closing the wrong
+thing, so it was the one part of this that nobody could see was broken. A snap
+**waiting for its database** answered nothing at all on the web port, so an
+upgrade that left the database down looked like WeKan itself loading forever;
+the wait is a page now, with the commands that say why, and it carries the
+product name and the schema-upgrade dashboard's colours. The **Admin Panel
+reports** were full of things that never happened - an ordinary restart written
+up as a crash (and, because of the same bug, actually turned into minutes of
+downtime), and a reverse proxy written up as a spoofing attempt. And a snap
+serving **the older of its two copies of the data** was told "No problems
+detected", because the status report reads only the database WeKan is connected
+to and never said WHICH one that is; it now ends with a section that does, and
+names the two recovery commands. Below that: two open issues that the current
+code already answers, closed by reading it.
 
 The binaries below are carried over from v10.90 and have NOT been checked
 against a newer build; `releases/provenance-table.sh` prints the real table
@@ -356,7 +359,59 @@ from the provenance each build job records.
 | win64 | Node.js | [nodejs.org](https://nodejs.org/dist/v24.19.0/node-v24.19.0-win-x64.zip) | v24.19.0 | `57f71ab3652e797d84acddc79c81cc9ff1c6ddb2a1974cdb83f00fee9bff4c73` |
 | win64 | FerretDB | [wekan/FerretDB](https://github.com/wekan/FerretDB/releases/download/v1.49.0/ferretdb-win64.exe) | v1.49.0 | `f42c50aa84095a9616b00f27a584c66b7bf79e3b109450c62a5f146ba3c85478` |
 
-This release fixes the following bugs:
+This release adds the following new feature:
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/7d81dddda">Apple Glass Pastel becomes a complete responsive visual system</a>. Thanks to xet7.</summary>
+
+The theme now reaches every major part of WeKan instead of stopping at the
+board background: the first header, All Boards, Admin Panel, Kanban lists and
+cards, card details, menus, dialogs, forms and authentication pages share the
+same pastel mesh, translucent structural surfaces and restrained blue accent.
+Desktop login uses a balanced split composition, while phone layouts collapse
+to one column without horizontal overflow.
+
+The redesign stays scoped to `appleglasspastel`, so every other theme keeps its
+existing cascade. Keyboard focus remains visible, reduced-motion preferences
+turn off decorative movement, and browsers without `backdrop-filter` receive
+solid readable surfaces. Minicards deliberately avoid a blur layer of their own
+so large boards remain practical to scroll and drag. Source-contract tests and
+browser coverage pin the global, board-only, Admin, desktop-login and
+mobile-login states. A final polish pass also hardens RTL authentication, long
+mobile board names, quick-access gutters and Admin glass-island sizing, and
+reduces every All Boards tile from three stacked surfaces to one card.
+
+</details>
+
+and fixes the following bugs:
+
+**Apple Glass responsive surfaces** - keeping the redesigned UI contained and
+its visual hierarchy clear.
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/e5c32ca30">Apple Glass stays contained in RTL and on small screens</a>. Thanks to xet7.</summary>
+
+The authentication split now uses explicit physical grid columns and swaps the
+logo and form tracks deliberately in RTL, avoiding Chromium paint overlap while
+keeping the form's language direction correct. On phones, long All Boards names
+wrap and grow their row instead of being clipped, the quick-access header counts
+its gutters inside the viewport, and Admin Panel glass islands can shrink below
+long content without horizontal overflow. Browser checks cover Chromium and
+Firefox desktop/mobile geometry, viewport containment and visible paint order.
+
+</details>
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/a2e6874d3">All Boards shows each board as one card instead of three stacked layers</a>. Thanks to xet7.</summary>
+
+The board tile DOM has an outer drag item, a visual tile and an inner navigation
+link. Apple Glass painted all three with the same white surface, border, radius
+and shadow, so every board looked like three cards stacked together. Only the
+middle `.board-list-item` is painted now; the two behavioural wrappers remain
+transparent. Browser coverage pins all three computed layers so the duplicate
+surfaces cannot return unnoticed.
+
+</details>
 
 **Cards on the board** - opening one, and closing it again.
 

@@ -75,7 +75,41 @@ function buildBoardLabel(rawLabel, allowedColors) {
   return { ok: true, name, color };
 }
 
+function buildBoardLabelUpdate(labels, labelId, body, allowedColors) {
+  const currentLabels = Array.isArray(labels) ? labels : [];
+  const existing = currentLabels.find(label => label && label._id === labelId);
+  if (!existing) {
+    return { ok: false, status: 404, error: 'Label not found' };
+  }
+
+  const input = body && typeof body === 'object' ? body : {};
+  const hasName = Object.prototype.hasOwnProperty.call(input, 'name');
+  const hasColor = Object.prototype.hasOwnProperty.call(input, 'color');
+  if (!hasName && !hasColor) {
+    return { ok: false, status: 400, error: 'name or color is required' };
+  }
+
+  const built = buildBoardLabel(
+    {
+      name: hasName ? input.name : existing.name,
+      color: hasColor ? input.color : existing.color,
+    },
+    allowedColors,
+  );
+  if (!built.ok) return built;
+
+  const label = { ...existing, name: built.name, color: built.color };
+  return {
+    ok: true,
+    label,
+    labels: currentLabels.map(item =>
+      item && item._id === labelId ? label : item,
+    ),
+  };
+}
+
 module.exports = {
   DEFAULT_LABEL_COLOR,
   buildBoardLabel,
+  buildBoardLabelUpdate,
 };

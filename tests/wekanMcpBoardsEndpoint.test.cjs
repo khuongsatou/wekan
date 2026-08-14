@@ -75,7 +75,7 @@ test('README documents private-board list_boards behavior', () => {
 });
 
 test('MCP server version was bumped for the board-discovery fix', () => {
-  assert.ok(/version="0\.2\.1"/.test(server), 'serverInfo should identify the fixed build');
+  assert.ok(/version="0\.3\.0"/.test(server), 'serverInfo should identify the expanded build');
 });
 
 test('untrusted resource ids cannot alter WeKan REST paths', () => {

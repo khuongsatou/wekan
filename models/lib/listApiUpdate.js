@@ -56,7 +56,7 @@ function buildListPutUpdate(body, normalizeColor) {
     set.starred = src.starred;
   }
 
-  if (src.wipLimit) {
+  if (Object.prototype.hasOwnProperty.call(src, 'wipLimit')) {
     set.wipLimit = src.wipLimit;
   }
 

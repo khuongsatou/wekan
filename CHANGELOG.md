@@ -306,8 +306,14 @@ browser build to verify).
 
 # Upcoming WeKan ® release
 
-**In short:** four reports from admins who could not tell what their own WeKan
-was doing. Clicking a **minicard again did not close the card** it had opened -
+**In short:** the local **WeKan MCP** grows from nine basic operations to 49
+permission-aware tools covering the board, list, swimlane, card and
+collaboration lifecycle, with server-side search and guarded destructive
+actions. Its full phase matrix is unit-tested and live-audited, including safe
+handling when a disabled REST API redirects a write to the HTML app. Alongside
+it are four reports from admins who could not tell what their own WeKan was
+doing. Clicking a **minicard again did not close the card** it had
+opened -
 the toggle was there and had a test, and it was closing the wrong thing, so it
 was the one part of this that nobody could see was broken. A snap **waiting for
 its database** answered nothing at all on the web port, so an upgrade that left
@@ -356,7 +362,58 @@ from the provenance each build job records.
 | win64 | Node.js | [nodejs.org](https://nodejs.org/dist/v24.19.0/node-v24.19.0-win-x64.zip) | v24.19.0 | `57f71ab3652e797d84acddc79c81cc9ff1c6ddb2a1974cdb83f00fee9bff4c73` |
 | win64 | FerretDB | [wekan/FerretDB](https://github.com/wekan/FerretDB/releases/download/v1.49.0/ferretdb-win64.exe) | v1.49.0 | `f42c50aa84095a9616b00f27a584c66b7bf79e3b109450c62a5f146ba3c85478` |
 
-This release fixes the following bugs:
+This release adds the following new feature:
+
+**Local MCP** - permission-aware WeKan automation through MCP and the REST API.
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/967684a82">Expands the local WeKan MCP from nine basic operations to 49 permission-aware tools</a>. Thanks to khuongsatou and xet7.</summary>
+
+The MCP server now covers the board, list, swimlane and card lifecycle, plus
+members, labels, comments and checklists. Card search runs in WeKan rather than
+collecting every board into the MCP process: its board scope comes from the
+authenticated user's active memberships and shares, assigned-only roles stay
+card-scoped, unrelated public boards stay out of global searches, and text,
+date and pagination inputs are bounded before they reach MongoDB.
+
+Writes still use WeKan's own permission checks. Permanent deletes and member
+removal require an explicit `confirm=true`; safe GET requests retry transient
+transport and gateway failures, writes are never retried automatically, and an
+expired login can authenticate once more without hiding a real 401.
+
+The REST support underneath preserves explicit empty card fields and a zero WIP
+limit, adds update/delete label routes with card-label cleanup, and keeps copy
+and move destinations board-consistent. In particular, copying a list on its
+own board now creates a distinct list, moving one across boards archives the
+emptied source, and copying a card rejects a list or swimlane from another
+board. Unit, negative, route-wiring and disposable-board smoke tests pin the
+49-tool manifest and cleanup contract.
+
+</details>
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/4512e7d72">Rejects redirected REST writes and verifies every WeKan MCP phase against a live server</a>. Thanks to khuongsatou and xet7.</summary>
+
+A disposable-board audit exercised 45 representative REST requests across the
+49-tool surface, including board, list, swimlane and card lifecycle operations,
+collaboration data and server-side search, then deleted both test boards. It
+found two integration gaps that mocked route tests could not expose.
+
+When the REST API was disabled, `/api/*` redirected to `/`. The HTTP client
+followed that redirect, changed a `POST` into a `GET`, and could mistake the
+HTML landing page for a successful write. API redirects are now rejected as
+structured errors, with a message to check the base URL and REST setting; safe
+reads retain their bounded transient retries and writes are still sent once.
+
+The live schema also showed that a list's `wipLimit` is an object, not the bare
+integer accepted by the MCP input. The adapter now maps zero to a disabled
+limit and a positive integer to an enabled hard limit. Regression tests assert
+the five disjoint implementation stages, all 49 ordered tools, destructive
+confirmations, route contracts, redirect policy and WIP mapping.
+
+</details>
+
+and fixes the following bugs:
 
 **Cards on the board** - opening one, and closing it again.
 

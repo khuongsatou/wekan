@@ -53,6 +53,19 @@ nhung client khong giu MCP session header tot.
 Server version 0.3 exposes 49 tools. `wekan_health_status` checks runtime and
 authentication before any board work.
 
+Implementation phases:
+
+| Stage | Scope | Added | Running total |
+| --- | --- | ---: | ---: |
+| Foundation | Existing board/list/card create and read workflow | 9 | 9 |
+| Phase 1 | Card read, update, move, archive, copy and delete | 7 | 16 |
+| Phase 2 | Users, members, labels, comments and checklists | 18 | 34 |
+| Phase 3 | List, swimlane and board lifecycle | 14 | 48 |
+| Phase 4 | Permission-scoped, paginated card search | 1 | 49 |
+
+The unit suite asserts each phase as a separate, disjoint manifest segment and
+also asserts the complete ordered 49-tool surface.
+
 Boards:
 
 - `list_boards`, `get_board`, `create_board`, `update_board`, `copy_board`,
@@ -62,6 +75,8 @@ Lists and swimlanes:
 
 - `list_lists`, `get_list`, `create_list`, `update_list`, `copy_list`,
   `move_list`, `delete_list`.
+- `update_list.wip_limit` accepts a non-negative integer: zero disables the
+  limit and a positive value enables a hard WIP limit.
 - `list_swimlanes`, `get_swimlane`, `create_swimlane`, `update_swimlane`,
   `copy_swimlane`, `move_swimlane`, `delete_swimlane`.
 

@@ -139,7 +139,10 @@ class WekanClient:
                 async with httpx.AsyncClient(
                     timeout=self.config.timeout_seconds,
                     verify=self.config.verify_tls,
-                    follow_redirects=True,
+                    # API redirects are configuration/auth failures, not a safe
+                    # way to replay writes. A 301 may turn POST into GET and make
+                    # the WeKan HTML landing page look like a successful result.
+                    follow_redirects=False,
                 ) as client:
                     response = await client.request(
                         method,
@@ -192,6 +195,13 @@ class WekanClient:
         raise WekanAPIError(f"{method} {path} authentication retry failed")
 
     def _decode_response(self, response: httpx.Response, method: str, path: str) -> Any:
+        if 300 <= response.status_code < 400:
+            location = response.headers.get("location", "<missing>")
+            raise WekanAPIError(
+                f"{method} {path} returned unexpected HTTP {response.status_code} "
+                f"redirect to {location}; verify WEKAN_BASE_URL and that the REST API is enabled"
+            )
+
         content_type = response.headers.get("content-type", "")
         if "application/json" in content_type:
             try:
@@ -1129,12 +1139,22 @@ def _server(
                 raise WekanConfigError("title must not be empty")
             if wip_limit is not None and wip_limit < 0:
                 raise WekanConfigError("wip_limit must be zero or greater")
+            wip_limit_body = None
+            if wip_limit is not None:
+                # Lists.wipLimit is an object in WeKan's persisted schema. Keep
+                # the MCP input convenient: zero disables the limit while a
+                # positive value enables a hard limit.
+                wip_limit_body = {
+                    "value": max(1, wip_limit),
+                    "enabled": wip_limit > 0,
+                    "soft": False,
+                }
             body = _clean_body(
                 {
                     "title": clean_title,
                     "color": color,
                     "starred": starred,
-                    "wipLimit": wip_limit,
+                    "wipLimit": wip_limit_body,
                 }
             )
             if not body:

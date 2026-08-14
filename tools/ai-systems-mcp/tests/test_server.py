@@ -16,6 +16,72 @@ sys.modules[SPEC.name] = SERVER
 SPEC.loader.exec_module(SERVER)
 
 
+FOUNDATION_TOOLS = [
+    "wekan_health_status",
+    "list_boards",
+    "get_board",
+    "create_board",
+    "list_lists",
+    "list_swimlanes",
+    "create_list",
+    "list_cards",
+    "create_card",
+]
+PHASE_1_CARD_TOOLS = [
+    "get_card",
+    "update_card",
+    "move_card",
+    "archive_card",
+    "unarchive_card",
+    "copy_card",
+    "delete_card",
+]
+PHASE_2_COLLABORATION_TOOLS = [
+    "list_users",
+    "list_board_members",
+    "add_board_member",
+    "set_board_member_role",
+    "remove_board_member",
+    "list_labels",
+    "create_label",
+    "update_label",
+    "delete_label",
+    "set_card_labels",
+    "list_comments",
+    "get_comment",
+    "create_comment",
+    "delete_comment",
+    "list_checklists",
+    "get_checklist",
+    "create_checklist",
+    "delete_checklist",
+]
+PHASE_3_STRUCTURE_TOOLS = [
+    "get_list",
+    "update_list",
+    "copy_list",
+    "move_list",
+    "delete_list",
+    "get_swimlane",
+    "create_swimlane",
+    "update_swimlane",
+    "copy_swimlane",
+    "move_swimlane",
+    "delete_swimlane",
+    "update_board",
+    "copy_board",
+    "delete_board",
+]
+PHASE_4_SEARCH_TOOLS = ["search_cards"]
+ALL_PHASE_TOOLS = [
+    FOUNDATION_TOOLS,
+    PHASE_1_CARD_TOOLS,
+    PHASE_2_COLLABORATION_TOOLS,
+    PHASE_3_STRUCTURE_TOOLS,
+    PHASE_4_SEARCH_TOOLS,
+]
+
+
 class FakeWekanClient:
     def __init__(self) -> None:
         self.config = SERVER.WekanConfig(
@@ -64,60 +130,52 @@ class WekanMcpToolTests(IsolatedAsyncioTestCase):
         assert result.structured_content is not None
         return result.structured_content
 
-    async def test_tool_manifest_contains_card_p0(self) -> None:
+    async def test_tool_manifest_contains_every_phase_in_order(self) -> None:
         tools = await self.server.list_tools()
+        expected = [name for phase in ALL_PHASE_TOOLS for name in phase]
+        self.assertEqual([tool.name for tool in tools], expected)
+        self.assertEqual([len(phase) for phase in ALL_PHASE_TOOLS], [9, 7, 18, 14, 1])
+        self.assertEqual(len(expected), 49)
+        self.assertEqual(len(set(expected)), 49)
+
+    async def test_foundation_route_contracts(self) -> None:
+        self.client.responses = [
+            [],
+            [],
+            {"_id": "board1"},
+            {"_id": "board2", "defaultSwimlaneId": "swim2"},
+            [],
+            [],
+            {"_id": "list2"},
+            [],
+            [{"_id": "swim1"}],
+            {"_id": "card1"},
+        ]
+        await self.call("wekan_health_status", {})
+        await self.call("list_boards", {})
+        await self.call("get_board", {"board_id": "board1"})
+        await self.call("create_board", {"title": "Roadmap"})
+        await self.call("list_lists", {"board_id": "board1"})
+        await self.call("list_swimlanes", {"board_id": "board1"})
+        await self.call("create_list", {"board_id": "board1", "title": "Todo"})
+        await self.call("list_cards", {"board_id": "board1", "list_id": "list1"})
+        await self.call(
+            "create_card",
+            {"board_id": "board1", "list_id": "list1", "title": "Ship it"},
+        )
         self.assertEqual(
-            [tool.name for tool in tools],
+            [call[:2] for call in self.client.calls],
             [
-                "wekan_health_status",
-                "list_boards",
-                "get_board",
-                "create_board",
-                "list_lists",
-                "list_swimlanes",
-                "create_list",
-                "list_cards",
-                "create_card",
-                "get_card",
-                "update_card",
-                "move_card",
-                "archive_card",
-                "unarchive_card",
-                "copy_card",
-                "delete_card",
-                "list_users",
-                "list_board_members",
-                "add_board_member",
-                "set_board_member_role",
-                "remove_board_member",
-                "list_labels",
-                "create_label",
-                "update_label",
-                "delete_label",
-                "set_card_labels",
-                "list_comments",
-                "get_comment",
-                "create_comment",
-                "delete_comment",
-                "list_checklists",
-                "get_checklist",
-                "create_checklist",
-                "delete_checklist",
-                "get_list",
-                "update_list",
-                "copy_list",
-                "move_list",
-                "delete_list",
-                "get_swimlane",
-                "create_swimlane",
-                "update_swimlane",
-                "copy_swimlane",
-                "move_swimlane",
-                "delete_swimlane",
-                "update_board",
-                "copy_board",
-                "delete_board",
-                "search_cards",
+                ("GET", "/api/users/user1/boards"),
+                ("GET", "/api/users/user1/boards"),
+                ("GET", "/api/boards/board1"),
+                ("POST", "/api/boards"),
+                ("GET", "/api/boards/board1/lists"),
+                ("GET", "/api/boards/board1/swimlanes"),
+                ("POST", "/api/boards/board1/lists"),
+                ("GET", "/api/boards/board1/lists/list1/cards"),
+                ("GET", "/api/boards/board1/swimlanes"),
+                ("POST", "/api/boards/board1/lists/list1/cards"),
             ],
         )
 
@@ -258,13 +316,28 @@ class WekanMcpToolTests(IsolatedAsyncioTestCase):
         self.assertTrue(deleted["deleted"])
         self.assertEqual(self.client.calls[-1][0], "DELETE")
 
-    async def test_all_remaining_destructive_tools_require_confirmation(self) -> None:
+    async def test_every_destructive_tool_requires_confirmation(self) -> None:
         cases = [
+            (
+                "delete_card",
+                {"board_id": "board1", "list_id": "list1", "card_id": "card1"},
+            ),
+            ("remove_board_member", {"board_id": "board1", "user_id": "user2"}),
             ("delete_label", {"board_id": "board1", "label_id": "label1"}),
+            (
+                "delete_comment",
+                {"board_id": "board1", "card_id": "card1", "comment_id": "comment1"},
+            ),
+            (
+                "delete_checklist",
+                {"board_id": "board1", "card_id": "card1", "checklist_id": "check1"},
+            ),
+            ("delete_list", {"board_id": "board1", "list_id": "list1"}),
             (
                 "delete_swimlane",
                 {"board_id": "board1", "swimlane_id": "swim1"},
             ),
+            ("delete_board", {"board_id": "board1"}),
         ]
         for name, arguments in cases:
             with self.subTest(tool=name):
@@ -272,6 +345,67 @@ class WekanMcpToolTests(IsolatedAsyncioTestCase):
                 self.assertFalse(result["ok"])
                 self.assertIn("confirm=true", str(result["message"]))
         self.assertEqual(self.client.calls, [])
+
+    async def test_phase_2_read_routes(self) -> None:
+        self.client.responses = [
+            [],
+            {"members": [{"userId": "user1"}]},
+            {"labels": [{"_id": "label1"}]},
+            [],
+            {"_id": "comment1"},
+            [],
+            {"_id": "check1"},
+        ]
+        await self.call("list_users", {})
+        await self.call("list_board_members", {"board_id": "board1"})
+        await self.call("list_labels", {"board_id": "board1"})
+        await self.call("list_comments", {"board_id": "board1", "card_id": "card1"})
+        await self.call(
+            "get_comment",
+            {"board_id": "board1", "card_id": "card1", "comment_id": "comment1"},
+        )
+        await self.call("list_checklists", {"board_id": "board1", "card_id": "card1"})
+        await self.call(
+            "get_checklist",
+            {"board_id": "board1", "card_id": "card1", "checklist_id": "check1"},
+        )
+        self.assertEqual(
+            [call[:2] for call in self.client.calls],
+            [
+                ("GET", "/api/users"),
+                ("GET", "/api/boards/board1"),
+                ("GET", "/api/boards/board1"),
+                ("GET", "/api/boards/board1/cards/card1/comments"),
+                ("GET", "/api/boards/board1/cards/card1/comments/comment1"),
+                ("GET", "/api/boards/board1/cards/card1/checklists"),
+                ("GET", "/api/boards/board1/cards/card1/checklists/check1"),
+            ],
+        )
+
+    async def test_phase_3_read_and_confirmed_delete_routes(self) -> None:
+        await self.call("get_list", {"board_id": "board1", "list_id": "list1"})
+        await self.call(
+            "delete_list",
+            {"board_id": "board1", "list_id": "list1", "confirm": True},
+        )
+        await self.call(
+            "get_swimlane", {"board_id": "board1", "swimlane_id": "swim1"}
+        )
+        await self.call(
+            "delete_swimlane",
+            {"board_id": "board1", "swimlane_id": "swim1", "confirm": True},
+        )
+        await self.call("delete_board", {"board_id": "board1", "confirm": True})
+        self.assertEqual(
+            [call[:2] for call in self.client.calls],
+            [
+                ("GET", "/api/boards/board1/lists/list1"),
+                ("DELETE", "/api/boards/board1/lists/list1"),
+                ("GET", "/api/boards/board1/swimlanes/swim1"),
+                ("DELETE", "/api/boards/board1/swimlanes/swim1"),
+                ("DELETE", "/api/boards/board1"),
+            ],
+        )
 
     async def test_member_tools_use_named_role_and_confirm_removal(self) -> None:
         await self.call(
@@ -382,7 +516,13 @@ class WekanMcpToolTests(IsolatedAsyncioTestCase):
             "delete_list", {"board_id": "board1", "list_id": "list1"}
         )
         self.assertFalse(preview["ok"])
-        self.assertEqual(self.client.calls[0][2], {"starred": False, "wipLimit": 0})
+        self.assertEqual(
+            self.client.calls[0][2],
+            {
+                "starred": False,
+                "wipLimit": {"value": 1, "enabled": False, "soft": False},
+            },
+        )
         self.assertTrue(self.client.calls[1][1].endswith("/lists/list1/copy"))
         self.assertEqual(self.client.calls[1][2]["title"], "Copy")
         self.assertTrue(self.client.calls[2][1].endswith("/lists/list1/move"))
@@ -454,6 +594,40 @@ class WekanMcpToolTests(IsolatedAsyncioTestCase):
 
 
 class WekanClientAuthTests(IsolatedAsyncioTestCase):
+    async def test_redirect_is_rejected_without_replaying_a_write(self) -> None:
+        config = SERVER.WekanConfig(
+            base_url="https://wekan.invalid",
+            api_token="token",
+            user_id="user1",
+            username=None,
+            email=None,
+            password=None,
+            timeout_seconds=1,
+            verify_tls=True,
+        )
+        client = SERVER.WekanClient(config)
+
+        class StubHttpClient:
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, *_args):
+                return None
+
+            async def request(self, *_args, **_kwargs):
+                return httpx.Response(301, headers={"location": "/"})
+
+        with mock.patch.object(
+            SERVER.httpx, "AsyncClient", return_value=StubHttpClient()
+        ) as async_client:
+            response = await client._send_request(
+                "POST", "/api/boards", json_body={}, headers={"Accept": "application/json"}
+            )
+
+        self.assertFalse(async_client.call_args.kwargs["follow_redirects"])
+        with self.assertRaisesRegex(SERVER.WekanAPIError, "unexpected HTTP 301"):
+            client._decode_response(response, "POST", "/api/boards")
+
     async def test_invalid_json_is_reported_as_a_structured_api_error(self) -> None:
         config = SERVER.WekanConfig(
             base_url="https://wekan.invalid",

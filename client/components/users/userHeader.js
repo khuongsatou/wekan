@@ -55,6 +55,9 @@ Template.memberMenuPopup.helpers({
 });
 
 Template.memberMenuPopup.events({
+  'click .js-personal-inbox'() {
+    Popup.back();
+  },
   'click .js-open-bookmarks'(e) {
     e.preventDefault();
     if (Utils.isMiniScreen()) {
@@ -65,6 +68,9 @@ Template.memberMenuPopup.events({
     }
   },
   'click .js-my-cards'() {
+    Popup.back();
+  },
+  'click .js-mcp-hub'() {
     Popup.back();
   },
   'click .js-due-cards'() {

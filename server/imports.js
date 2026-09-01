@@ -128,6 +128,9 @@ import '/server/models/userPositionHistory';
 import '/server/ldapGroupSync';
 import '/server/sharedTemplateTargets';
 import '/server/propagateOrgTeamMembers';
+import '/server/planner';
+import '/server/savedSearches';
+import '/server/templatePackages';
 
 // ----------------------------------------------------------------------------
 // 4. Config (shared)
@@ -183,6 +186,9 @@ import '/server/cron/syncedCron';
 // ----------------------------------------------------------------------------
 import '/server/card-opened-webhook';
 import '/server/cards-loading';
+import '/server/mcpPublicConfig';
+import '/server/mcpApiKeys';
+import '/server/mcpUsage';
 
 // ----------------------------------------------------------------------------
 // 8. Server — import helpers
@@ -227,6 +233,7 @@ import '/server/methods/repairBrokenCards';
 import '/server/methods/cleanupTemplateContainers';
 import '/server/methods/systemStatus';
 import '/server/methods/positionHistory';
+import '/server/personalInbox';
 import '/server/methods/sandstormMigration';
 import '/server/methods/tenant';
 import '/server/startup/repairBoardsOnStartup';

@@ -13,6 +13,8 @@ import '/client/components/main/layouts.jade';
 // picked up by being on disk - see tests/templateRegistration.test.cjs.
 import '/client/components/main/pageSidebar.jade';
 import '/client/components/main/myCards.jade';
+import '/client/components/main/mcpHub.jade';
+import '/client/components/main/planner.jade';
 import '/client/components/main/popup.tpl.jade';
 import '/client/components/main/spinner.jade';
 import '/client/components/main/spinner_bounce.jade';
@@ -41,6 +43,8 @@ import '/client/components/main/themeColorPicker.js';
 import '/client/components/main/uiFont.js';
 import '/client/components/main/layouts.js';
 import '/client/components/main/myCards.js';
+import '/client/components/main/mcpHub.js';
+import '/client/components/main/planner.js';
 import '/client/components/main/popup.js';
 import '/client/components/main/recoveryMaintenance.js';
 import '/client/components/main/safeFilename.js';
@@ -57,6 +61,8 @@ import '/client/components/main/header.css';
 import '/client/components/main/keyboardShortcuts.css';
 import '/client/components/main/layouts.css';
 import '/client/components/main/myCards.css';
+import '/client/components/main/mcpHub.css';
+import '/client/components/main/planner.css';
 import '/client/components/main/popup.css';
 import '/client/components/main/recoveryMaintenance.css';
 import '/client/components/main/spinner_bounce.css';
@@ -67,3 +73,6 @@ import '/client/components/main/spinner_double_bounce.css';
 import '/client/components/main/spinner_rotateplane.css';
 import '/client/components/main/spinner_scaleout.css';
 import '/client/components/main/spinner_wave.css';
+
+// Keep the opt-in chrome override after every legacy main style.
+import '/client/components/main/appleGlassPastel.css';

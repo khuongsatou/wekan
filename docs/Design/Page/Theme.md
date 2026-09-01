@@ -26,6 +26,9 @@ template and says whose theme is being set:
 | `models/lib/themeCategories.js` | `.js` module, pure helpers | The categories, their order, which allow a custom colour and how many. |
 | `models/metadata/colors.js` | `.js` module | `BOARD_COLORS` — the theme names themselves. |
 | `client/components/main/globalThemeColor.js` | `.js` startup | Applies the winning theme to `<body>` and the CSS variables — the layering below. |
+| `client/components/main/appleGlassPastel.css` | `.css` theme | Shared Apple Glass Pastel tokens, chrome, controls, fly-outs and accessibility fallbacks. |
+| `client/components/boards/appleGlassPastelPages.css` | `.css` theme | Apple Glass Pastel surfaces for All Boards, Admin Panel and Kanban. |
+| `client/components/users/appleGlassPastelAuth.css` | `.css` theme | Responsive Apple Glass Pastel sign-in and registration layout. |
 | `client/components/sidebar/sidebar.jade` | `.jade` template | Board Settings / Change Color — `scope="board"`. |
 | `client/components/users/userHeader.jade` | `.jade` template | Member Settings / Change color — `scope="global"`. |
 | `client/components/settings/settingBody.jade` | `.jade` template | Admin Panel / Settings / Visibility / Change color — `scope="admin"`. |
@@ -66,8 +69,8 @@ value gets published in the instance's place.
 | Place | Scope | Writes | Clearing it means |
 | --- | --- | --- | --- |
 | Board Settings / Change Color | `board` | `board.color` + `board.customThemeColors` | — (a board always has a colour, so there is no "Default theme" row) |
-| Member Settings / Change color | `global` | `setGlobalThemeColor` | fall back to the site theme, and to per-board colours |
-| Admin Panel / Settings / Visibility / Change color | `admin` | `setAdminThemeColor` | fall back to WeKan's default theme (or, for an Organization, to the instance's) |
+| Member Settings / Change color | `global` | `setGlobalThemeColor` | fall back to the site theme, app default and per-board colours |
+| Admin Panel / Settings / Visibility / Change color | `admin` | `setAdminThemeColor` | fall back to the shared app default theme (or, for an Organization, to the instance's) |
 
 ## What the picker guarantees
 

@@ -705,9 +705,42 @@ body:has(.board-wrapper.board-color-appleglasspastel) .my-cards-board-badge {
 }
 
 .board-color-appleglasspastel.board-wrapper .swimlane .swimlane-header-wrap {
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--agp-border);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  padding-inline: 14px;
+  margin-block: 6px;
+  min-height: 38px;
+  align-items: center;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+.board-color-appleglasspastel.board-wrapper .swimlane .swimlane-header-wrap .swimlane-header {
+  color: var(--agp-heading);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.board-color-appleglasspastel.board-wrapper .swimlane .swimlane-header-wrap .swimlane-header-menu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.board-color-appleglasspastel.board-wrapper .swimlane .swimlane-header-wrap .swimlane-header-menu a {
+  color: var(--agp-muted);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 0.95rem;
+  transition: color 0.15s var(--agp-spring), background-color 0.15s var(--agp-spring);
+}
+
+.board-color-appleglasspastel.board-wrapper .swimlane .swimlane-header-wrap .swimlane-header-menu a:hover {
+  color: var(--agp-primary);
+  background: var(--agp-primary-soft);
 }
 
 .board-color-appleglasspastel.board-wrapper .list-header {
@@ -728,6 +761,22 @@ body:has(.board-wrapper.board-color-appleglasspastel) .my-cards-board-badge {
   color: var(--agp-heading);
   letter-spacing: -0.01em;
   line-height: 1.35;
+}
+
+.board-color-appleglasspastel.board-wrapper .list-header .list-header-menu-icon,
+.board-color-appleglasspastel.board-wrapper .list-header .list-header-plus-icon,
+.board-color-appleglasspastel.board-wrapper .list-header .list-collapse-indicator {
+  color: var(--agp-muted);
+  border-radius: 6px;
+  padding: 3px 6px;
+  transition: color 0.15s var(--agp-spring), background-color 0.15s var(--agp-spring);
+}
+
+.board-color-appleglasspastel.board-wrapper .list-header .list-header-menu-icon:hover,
+.board-color-appleglasspastel.board-wrapper .list-header .list-header-plus-icon:hover,
+.board-color-appleglasspastel.board-wrapper .list-header .list-collapse-indicator:hover {
+  color: var(--agp-primary);
+  background: var(--agp-primary-soft);
 }
 
 .board-color-appleglasspastel.board-wrapper .list-header-card-count {
@@ -802,6 +851,60 @@ body:has(.board-wrapper.board-color-appleglasspastel) .my-cards-board-badge {
   color: var(--agp-primary-dark);
   box-shadow: 0 2px 10px rgba(94, 106, 210, 0.18);
   transform: translateY(-1px);
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard.minicard-composer {
+  background: #ffffff;
+  border: 1.5px solid var(--agp-primary);
+  border-radius: 12px;
+  box-shadow: 0 0 0 3px rgba(94, 106, 210, 0.18), var(--agp-shadow-card);
+  padding: 10px 12px;
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard-composer-textarea {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  font-size: 0.875rem;
+  color: var(--agp-heading);
+  resize: vertical;
+  outline: none !important;
+  padding: 0;
+}
+
+.board-color-appleglasspastel.board-wrapper .add-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.board-color-appleglasspastel.board-wrapper .add-controls button.primary {
+  background: var(--agp-primary) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 999px !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  padding: 6px 16px;
+  box-shadow: 0 2px 8px rgba(94, 106, 210, 0.25);
+  transition: background-color 0.15s var(--agp-spring), transform 0.12s ease-out;
+}
+
+.board-color-appleglasspastel.board-wrapper .add-controls button.primary:hover {
+  background: var(--agp-primary-hover) !important;
+  transform: translateY(-1px);
+}
+
+.board-color-appleglasspastel.board-wrapper .add-controls .js-close-inlined-form {
+  border-radius: 999px;
+  padding: 4px 8px;
+  color: var(--agp-muted);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.board-color-appleglasspastel.board-wrapper .add-controls .js-close-inlined-form:hover {
+  color: var(--agp-heading);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .board-color-appleglasspastel.board-wrapper .card-details,
@@ -1015,6 +1118,76 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
   box-shadow: 0 4px 14px rgba(94, 106, 210, 0.12);
   color: var(--agp-primary);
   transform: translateY(-1px);
+}
+
+.board-color-appleglasspastel.board-wrapper .card-details .card-details-item-title,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .card-details-item-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--agp-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.board-color-appleglasspastel.board-wrapper .card-details .card-details-item-title i.fa,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .card-details-item-title i.fa {
+  color: var(--agp-primary);
+  margin-inline-end: 6px;
+}
+
+.board-color-appleglasspastel.board-wrapper .card-details .card-description-textarea,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .card-description-textarea {
+  border: 1px solid var(--agp-border-strong);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 12px;
+  transition: border-color 0.15s var(--agp-spring), box-shadow 0.15s var(--agp-spring);
+}
+
+.board-color-appleglasspastel.board-wrapper .card-details .card-description-textarea:focus,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .card-description-textarea:focus {
+  border-color: var(--agp-primary);
+  box-shadow: 0 0 0 3px rgba(94, 106, 210, 0.18);
+  outline: none;
+}
+
+.board-color-appleglasspastel.board-wrapper .card-details .checklist-item,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .checklist-item {
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background-color 0.12s ease;
+}
+
+.board-color-appleglasspastel.board-wrapper .card-details .checklist-item:hover,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .checklist-item:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.board-color-appleglasspastel.board-wrapper .card-details .card-details-header .card-details-menu,
+.board-color-appleglasspastel.board-wrapper .card-details .card-details-header .minimize-card-details,
+.board-color-appleglasspastel.board-wrapper .card-details .card-details-header .maximize-card-details,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .card-details-header .card-details-menu,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .card-details-header .minimize-card-details,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .card-details-header .maximize-card-details {
+  border-radius: 999px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--agp-muted);
+  transition: all 0.15s var(--agp-spring);
+}
+
+.board-color-appleglasspastel.board-wrapper .card-details .card-details-header .card-details-menu:hover,
+.board-color-appleglasspastel.board-wrapper .card-details .card-details-header .minimize-card-details:hover,
+.board-color-appleglasspastel.board-wrapper .card-details .card-details-header .maximize-card-details:hover,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .card-details-header .card-details-menu:hover,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .card-details-header .minimize-card-details:hover,
+body:has(.board-wrapper.board-color-appleglasspastel) .card-details .card-details-header .maximize-card-details:hover {
+  color: var(--agp-heading);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 body.board-color-appleglasspastel .board-sidebar.sidebar.is-open,

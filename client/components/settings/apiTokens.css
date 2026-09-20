@@ -1,0 +1,44 @@
+.api-token-page {
+  box-sizing: border-box;
+  display: grid;
+  gap: 18px;
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: 28px;
+}
+
+.api-token-heading h2,
+.api-token-heading p,
+.api-token-panel h3,
+.api-token-panel p {
+  margin-top: 0;
+}
+
+.api-token-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(30, 60, 90, 0.16);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(30, 60, 90, 0.08);
+  margin: 0;
+  padding: 22px;
+}
+
+.api-token-panel form {
+  display: grid;
+  gap: 10px;
+  max-width: none;
+}
+
+.api-token-panel form input,
+.api-token-panel form select {
+  box-sizing: border-box;
+  max-width: 760px;
+  width: 100%;
+}
+.api-token-config { padding: 12px; overflow: auto; background: var(--input-bg, #f5f5f5); }
+.api-token-secret { margin-top: 18px; padding: 14px; border: 2px solid var(--theme-accent, #005377); }
+.api-token-list { display: grid; gap: 10px; }
+.api-token-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px 16px; padding: 14px; border: 1px solid var(--border-color, #ddd); border-radius: 6px; }
+.api-token-prefix { font-family: monospace; }
+.api-token-owner { opacity: .8; }
+@media (max-width: 800px) { .api-token-row { grid-template-columns: 1fr; } }

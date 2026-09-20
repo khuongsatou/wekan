@@ -118,6 +118,9 @@ template(name="defaultLayout")
           +Template.dynamic(template=Modal.getHeaderName)
           +Template.dynamic(template=Modal.getTemplateName)
 
+template(name="pluginGuideLayout")
+  +Template.dynamic(template=content)
+
 template(name="notFound")
   +message(label='page-not-found')
 

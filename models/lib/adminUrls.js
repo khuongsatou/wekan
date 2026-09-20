@@ -69,6 +69,7 @@ const ADMIN_PAGES = {
     defaultSlug: 'people',
     panes: {
       login: 'registration-setting',
+      'api-tokens': 'api-tokens-setting',
       email: 'email-setting',
       domains: 'domains-setting',
       organizations: 'org-setting',
@@ -148,6 +149,7 @@ const ADMIN_PANE_TITLES = {
   },
   people: {
     login: { titleKey: 'login' },
+    'api-tokens': { titleKey: 'api-tokens' },
     email: { titleKey: 'email' },
     domains: { titleKey: 'domains' },
     organizations: { titleKey: 'organizations' },

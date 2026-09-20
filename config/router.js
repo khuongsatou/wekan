@@ -345,6 +345,25 @@ FlowRouter.route('/support', {
   },
 });
 
+// Public installation guide for the Codex plugin. This intentionally renders
+// without the signed-in guard so people can read it before installing.
+FlowRouter.route('/plugin', {
+  name: 'plugin',
+  action() {
+    Session.set('currentBoard', null);
+    Session.set('currentList', null);
+    Session.set('currentCard', null);
+    Session.set('popupCardId', null);
+    Session.set('popupCardBoardId', null);
+    Filter.reset();
+    Session.set('sortBy', '');
+    EscapeActions.executeUpTo('popup-close');
+    Utils.manageCustomUI();
+    Utils.manageMatomo();
+    this.render('pluginGuideLayout', { content: 'pluginGuide' });
+  },
+});
+
 FlowRouter.route('/b/:id/:slug/rules', {
   name: 'board-rules',
   triggersEnter: [ensureSignedInUnlessSandstorm],
@@ -682,6 +701,24 @@ FlowRouter.route('/mcp', {
     Utils.manageCustomUI();
     Utils.manageMatomo();
     this.render('defaultLayout', { content: 'mcpHub' });
+  },
+});
+
+FlowRouter.route('/api-tokens', {
+  name: 'api-tokens',
+  triggersEnter: [ensureSignedInUnlessSandstorm],
+  action() {
+    Session.set('currentBoard', null);
+    Session.set('currentList', null);
+    Session.set('currentCard', null);
+    Session.set('popupCardId', null);
+    Session.set('popupCardBoardId', null);
+    Filter.reset();
+    Session.set('sortBy', '');
+    EscapeActions.executeUpTo('popup-close');
+    Utils.manageCustomUI();
+    Utils.manageMatomo();
+    this.render('defaultLayout', { content: 'apiTokenSettings' });
   },
 });
 

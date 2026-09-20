@@ -24,6 +24,15 @@ body:has(.board-wrapper.board-color-appleglasspastel) {
   --agp-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
   --agp-shadow-island: 0 8px 30px rgba(0, 0, 0, 0.06);
   --agp-shadow-flyout: 0 20px 60px rgba(0, 0, 0, 0.12);
+  --agp-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --agp-shadow-lifted: 0 10px 28px -4px rgba(0, 0, 0, 0.1), 0 2px 8px -2px rgba(0, 0, 0, 0.05);
+  --agp-focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.35);
+  --agp-success-bg: rgba(16, 185, 129, 0.12);
+  --agp-success-text: #059669;
+  --agp-warning-bg: rgba(245, 158, 11, 0.14);
+  --agp-warning-text: #d97706;
+  --agp-danger-bg: rgba(239, 68, 68, 0.12);
+  --agp-danger-text: #dc2626;
   --agp-radius-control: 12px;
   --agp-radius-card: 14px;
   --agp-radius-panel: 18px;
@@ -300,6 +309,7 @@ body.board-color-appleglasspastel .pop-over-list a:active {
 body.board-color-appleglasspastel :focus-visible {
   outline: 2px solid var(--agp-primary);
   outline-offset: 2px;
+  box-shadow: var(--agp-focus-ring);
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {

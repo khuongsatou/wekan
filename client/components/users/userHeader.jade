@@ -30,6 +30,10 @@ template(name="memberMenuPopup")
           i.fa.fa-plug
           | {{_ 'mcp-hub'}}
       li
+        a.js-api-tokens(href="{{pathFor 'api-tokens'}}")
+          i.fa.fa-key
+          | {{_ 'api-tokens'}}
+      li
         a.js-due-cards(href="{{pathFor 'due-cards'}}")
           i.fa.fa-calendar
           | {{_ 'dueCards-title'}}

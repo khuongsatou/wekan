@@ -1,0 +1,51 @@
+template(name="apiTokenSettings")
+  section.api-token-page(aria-labelledby="api-token-title")
+    header.api-token-heading
+      h2#api-token-title {{_ 'api-tokens'}}
+      p {{_ 'api-tokens-description'}}
+    unless isAdminMode
+      section.api-token-panel
+        h3 {{_ 'api-token-create-title'}}
+        p {{_ 'api-token-create-description'}}
+        form.js-create-api-token
+          label(for="api-token-name") {{_ 'api-token-name'}}
+          input#api-token-name.wekan-form-control.js-api-token-name(required type="text" maxlength="80" placeholder="{{_ 'api-token-name-placeholder'}}")
+          label(for="api-token-expiry") {{_ 'api-token-expiry'}}
+          select#api-token-expiry.wekan-form-control.js-api-token-expiry
+            option(value="30") {{_ 'api-token-expiry-30'}}
+            option(value="90" selected) {{_ 'api-token-expiry-90'}}
+            option(value="365") {{_ 'api-token-expiry-365'}}
+          button.primary(type="submit") {{_ 'api-token-create'}}
+        if createdSecret
+          .api-token-secret(role="status")
+            strong {{_ 'api-token-created'}}
+            p {{_ 'api-token-show-once'}}
+            input.wekan-form-control.js-api-token-secret(type="text" readonly value=createdSecret)
+            button.primary.js-copy-api-token(type="button") {{_ 'api-token-copy'}}
+            button.js-dismiss-api-token(type="button") {{_ 'api-token-dismiss'}}
+        p.api-token-status(role="status")= statusMessage
+    section.api-token-panel
+      h3 {{#if isAdminMode}}{{_ 'api-token-admin-title'}}{{else}}{{_ 'api-token-existing-title'}}{{/if}}
+      if tokens.length
+        .api-token-list
+          each token in tokens
+            article.api-token-row
+              strong= token.name
+              span.api-token-prefix= token.prefix
+              if isAdminMode
+                span.api-token-owner= token.ownerLabel
+              span {{_ 'api-token-created-at'}}: #{token.createdLabel}
+              span {{_ 'api-token-expires-at'}}: #{token.expiresLabel}
+              span {{_ 'api-token-last-used'}}: #{token.lastUsedLabel}
+              span= token.stateLabel
+              button.danger.js-revoke-api-token(type="button" data-id=token._id) {{_ 'api-token-revoke'}}
+      else
+        p {{_ 'api-token-none'}}
+    unless isAdminMode
+      section.api-token-panel
+        h3 {{_ 'api-token-plugin-config'}}
+        pre.api-token-config wk_api_…
+        p WEKAN_USER_ID=#{currentUserId}
+        p WEKAN_API_TOKEN=&lt;copy the token shown once after creation&gt;
+        p wk_mcp_… is for MCP only.
+        p {{_ 'api-token-mcp-warning'}}

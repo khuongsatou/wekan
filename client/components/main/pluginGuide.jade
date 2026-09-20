@@ -1,0 +1,73 @@
+template(name="pluginGuide")
+  main.plugin-guide(aria-labelledby="plugin-guide-title")
+    .plugin-guide-shell
+      header.plugin-guide-header
+        .plugin-guide-brand
+          i.plugin-guide-mark.fa.fa-infinity(aria-hidden="true")
+          span 1 NÚT NHẤN
+          span.plugin-guide-divider /
+          span WEKAN
+          span.plugin-guide-pill CODEX PLUGIN · HƯỚNG DẪN CÀI ĐẶT
+        p.plugin-guide-kicker CODEX · WEKAN · MCP · WORKFLOW
+
+      section.plugin-guide-hero
+        .plugin-guide-badge WEKAN CODEX PLUGIN
+        h1#plugin-guide-title
+          | Đưa WeKan vào
+          span.plugin-guide-title-accent Codex
+        p Cài plugin WeKan để Codex có thể kết nối bảng công việc,
+          |  quản lý task và hỗ trợ workflow trực tiếp trong task.
+        a.plugin-guide-cta(href="https://github.com/khuongsatou/mtips5s_wekan_plugin" target="_blank" rel="noopener noreferrer")
+          i.fa.fa-external-link(aria-hidden="true")
+          | Mở GitHub để cài plugin
+          span →
+        .plugin-guide-caption CODEX PLUGIN · WEKAN · CÀI ĐẶT TỪ REPOSITORY
+
+      section.plugin-guide-card.plugin-guide-install
+        h2
+          i.plugin-guide-check.fa.fa-check(aria-hidden="true")
+          | Cách cài plugin cho Codex
+        ol
+          li Nhấn nút phía trên để mở repository
+            code mtips5s_wekan_plugin
+            |  trên GitHub.
+          li Sao chép URL repository, sau đó mở
+            strong Codex → Plugins
+            | .
+          li Chọn thêm marketplace/plugin từ GitHub, dán URL repository và cài
+            strong WeKan Codex Plugin
+            | .
+          li Khi Codex yêu cầu kết nối, đăng nhập WeKan hoặc cấu hình kết nối MCP
+            |  theo hướng dẫn của plugin.
+          li Mở một task mới và yêu cầu Codex hiển thị
+            code menu
+            |  hoặc quản lý công việc trên WeKan.
+
+      section.plugin-guide-card.plugin-guide-note
+        h2
+          i.fa.fa-star-o(aria-hidden="true")
+          | Sau khi cài
+        .plugin-guide-note-row
+          i.plugin-guide-note-icon.fa.fa-check(aria-hidden="true")
+          p Không cần chép secret hoặc token dùng chung vào giao diện hướng dẫn này. Codex sẽ sử dụng luồng kết nối riêng của plugin khi cần.
+        .plugin-guide-note-row
+          i.plugin-guide-note-icon.fa.fa-refresh(aria-hidden="true")
+          p Nếu chưa thấy plugin, hãy khởi động lại Codex rồi kiểm tra lại mục
+            strong Plugins
+            | .
+
+      section.plugin-guide-features(aria-label="WeKan Codex Plugin features")
+        article.plugin-guide-feature
+          i.fa.fa-bolt(aria-hidden="true")
+          h3 Quản lý công việc
+          p Tạo, đọc và cập nhật board, list, card và task từ Codex.
+        article.plugin-guide-feature
+          i.fa.fa-check(aria-hidden="true")
+          h3 Kết nối rõ ràng
+          p Dùng repository chính thức để xem mã nguồn và cách cấu hình plugin.
+        article.plugin-guide-feature
+          i.fa.fa-cog(aria-hidden="true")
+          h3 Workflow Codex
+          p Điều phối kế hoạch, thực thi và bàn giao kết quả trong cùng một task.
+
+      footer.plugin-guide-footer © 2026 Nguyễn Văn Khương · WeKan Codex Plugin

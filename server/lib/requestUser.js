@@ -29,6 +29,7 @@
 
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+const { API_TOKEN_PREFIX, verifyApiToken } = require('/server/lib/apiTokens');
 
 export function parseCookies(req) {
   const header = req && req.headers && req.headers.cookie;
@@ -80,7 +81,11 @@ export function extractLoginToken(req) {
   if (xAuth && typeof xAuth === 'string') return xAuth.trim();
 
   const q = parseQuery(req);
-  if (q.authToken && typeof q.authToken === 'string') return q.authToken.trim();
+  if (q.authToken && typeof q.authToken === 'string') {
+    const token = q.authToken.trim();
+    // Dedicated REST tokens are header-only to prevent credentials in URLs.
+    if (!token.startsWith(API_TOKEN_PREFIX)) return token;
+  }
 
   const cookies = parseCookies(req);
   if (cookies.meteor_login_token) return cookies.meteor_login_token.trim();
@@ -110,6 +115,8 @@ export async function getUserIdFromRequest(req) {
     }
     const raw = extractLoginToken(req);
     if (!raw || typeof raw !== 'string' || raw.length < 10) return null;
+    const apiToken = await verifyApiToken(raw);
+    if (apiToken) return apiToken.userId;
     const hashed = Accounts._hashLoginToken(raw);
     const user = await Meteor.users.findOneAsync(
       { 'services.resume.loginTokens.hashedToken': hashed },

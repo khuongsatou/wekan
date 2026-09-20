@@ -38,6 +38,7 @@ import '/server/initializeDirs';
 // ----------------------------------------------------------------------------
 import '/server/apiMiddleware';
 import '/server/apiAuthRoutes';
+import '/server/apiTokens';
 
 // ----------------------------------------------------------------------------
 // 1. Shared imports (i18n, utilities, reactive cache)

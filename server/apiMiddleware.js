@@ -8,6 +8,7 @@ const { WebApp } = require('meteor/webapp');
 const bodyParser = require('body-parser');
 const { safeJsonStringify } = require('/server/lib/apiResponseHelpers');
 const { verifyMcpApiKey } = require('/server/lib/mcpApiKeys');
+const { API_TOKEN_PREFIX, verifyApiToken } = require('/server/lib/apiTokens');
 
 // ---------------------------------------------------------------------------
 // 1. Body parsing (previously registered by json-routes)
@@ -40,9 +41,21 @@ WebApp.handlers.use(function parseBearerToken(req, res, next) {
     }
   }
 
-  // Fallback to access_token query param
+  // Legacy clients may still use access_token in the query string. Dedicated
+  // REST tokens are header-only: a wk_api_... value in a URL can be copied to
+  // proxy/access logs and must never become an authenticated request.
   if (!req.authToken && req.query && req.query.access_token) {
-    req.authToken = req.query.access_token;
+    const accessToken = req.query.access_token;
+    if (typeof accessToken !== 'string' || !accessToken.startsWith(API_TOKEN_PREFIX)) {
+      req.authToken = accessToken;
+    }
+  }
+
+  if (!req.authToken) {
+    const xAuthToken = req.headers['x-auth-token'] || req.headers['X-Auth-Token'];
+    if (typeof xAuthToken === 'string' && xAuthToken) {
+      req.authToken = xAuthToken;
+    }
   }
 
   next();
@@ -85,6 +98,12 @@ WebApp.handlers.use(async function authenticateByMcpApiKey(req, res, next) {
 WebApp.handlers.use(async function authenticateByToken(req, res, next) {
   if (req.authToken && !req.userId) {
     try {
+      const apiToken = await verifyApiToken(req.authToken);
+      if (apiToken) {
+        req.userId = apiToken.userId;
+        req.apiTokenId = apiToken.tokenId;
+        return next();
+      }
       const hashedToken = Accounts._hashLoginToken(req.authToken);
       const user = await Meteor.users.findOneAsync(
         { 'services.resume.loginTokens.hashedToken': hashedToken },
@@ -134,6 +153,19 @@ function sendJsonResult(res, options) {
   res.end();
 }
 
+function redactAuthQuery(url) {
+  if (typeof url !== 'string' || !url) return 'a request';
+  try {
+    const parsed = new URL(url, 'http://wekan.invalid');
+    for (const key of ['access_token', 'authToken']) {
+      if (parsed.searchParams.has(key)) parsed.searchParams.set(key, '<redacted>');
+    }
+    return `${parsed.pathname}${parsed.search}`;
+  } catch (_) {
+    return '[unparseable request URL]';
+  }
+}
+
 // GHSA-3gcg-g6rf-w2rx: an export route that throws must not escape as an unhandled
 // promise rejection. This app turns one of those into a full process crash - the
 // note in server/ldapGroupSync.js explains why - so a single crafted request could
@@ -148,7 +180,7 @@ function safeRoute(handler) {
       return await handler.call(this, req, res, ...rest);
     } catch (error) {
       console.error('[api] unhandled error while serving',
-        (req && req.url) || 'a request', error);
+        redactAuthQuery(req && req.url), error);
       try {
         if (!res.headersSent) {
           res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });

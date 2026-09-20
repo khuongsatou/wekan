@@ -76,6 +76,7 @@ Template.people.onCreated(function () {
   this.loading = new ReactiveVar(false);
   // The page opens on Login, the first entry of the menu - as it always did.
   this.registrationSetting = new ReactiveVar(true);
+  this.apiTokensSetting = new ReactiveVar(false);
   this.emailSetting = new ReactiveVar(false);
   this.orgSetting = new ReactiveVar(false);
   this.teamSetting = new ReactiveVar(false);
@@ -304,6 +305,7 @@ Template.people.onCreated(function () {
     const openPaneId = firstPeoplePaneId(user);
     if (openPaneId === 'registration-setting') return;
     this.registrationSetting.set(false);
+    this.apiTokensSetting.set(openPaneId === 'api-tokens-setting');
     this.orgSetting.set(openPaneId === 'org-setting');
     this.peopleSetting.set(openPaneId === 'people-setting');
     this.activeMenuId.set(openPaneId);
@@ -318,6 +320,7 @@ Template.people.onCreated(function () {
     if (targetID && targetID !== this.activeMenuId.get()) {
       this.activeMenuId.set(targetID);
       this.registrationSetting.set('registration-setting' === targetID);
+      this.apiTokensSetting.set('api-tokens-setting' === targetID);
       this.emailSetting.set('email-setting' === targetID);
       this.orgSetting.set('org-setting' === targetID);
       this.teamSetting.set('team-setting' === targetID);
@@ -427,6 +430,7 @@ function peopleMenu(user) {
     // sign in and how they are reached, which is what this page is for. The ids and
     // i18n keys are unchanged, so every existing translation still applies.
     { id: 'registration-setting', icon: 'fa-key', labelKey: 'login', emoji: true },
+    user && user.isAdmin ? { id: 'api-tokens-setting', icon: 'fa-plug', labelKey: 'api-tokens', emoji: true } : null,
     // No e-mail settings on Sandstorm; a null entry is dropped, not rendered empty.
     isSandstorm ? null : { id: 'email-setting', icon: 'fa-envelope', labelKey: 'email', emoji: true },
     // Domains sits with E-mail: it lists the e-mail domains the users sign in
@@ -656,6 +660,9 @@ Template.people.helpers({
   },
   registrationSetting() {
     return Template.instance().registrationSetting;
+  },
+  apiTokensSetting() {
+    return Template.instance().apiTokensSetting;
   },
   emailSetting() {
     return Template.instance().emailSetting;

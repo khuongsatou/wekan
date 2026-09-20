@@ -217,6 +217,23 @@ Date fields should be ISO-like date strings accepted by WeKan, for example
 
 ## WeKan MCP Tab
 
+## REST API plugin token
+
+Neu plugin goi WeKan REST API, tao token rieng tai `/api-tokens` trong menu tai
+khoan. Token nay co dang `wk_api_...`, duoc luu bang SHA-256 hash, va chi hien
+thi mot lan sau khi tao. Cau hinh plugin bang:
+
+```text
+WEKAN_BASE_URL=https://wekan.example.com
+WEKAN_USER_ID=<id cua user tao token>
+WEKAN_API_TOKEN=wk_api_...
+```
+
+`wk_mcp_...` la MCP key danh rieng cho endpoint MCP va khong dung lam
+`WEKAN_API_TOKEN`. Khi can xoay token, tao token moi, cap nhat plugin, sau do
+thu hoi token cu trong Member Settings hoac Admin Panel > People > REST API
+Tokens.
+
 WeKan co tab `MCP Connections` tai `/mcp`. Tab nay hien endpoint va cau hinh
 JSON de client sao chep. User dat ten, chon han 30/90/365 ngay, tao key va
 nhin thay secret DUNG MOT LAN. Danh sach sau do chi hien prefix, ngay tao, ngay

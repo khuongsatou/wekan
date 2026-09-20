@@ -11,6 +11,7 @@ import '/client/components/settings/settingHeader.jade';
 import '/client/components/settings/leftMenu.jade';
 import '/client/components/settings/tablePage.jade';
 import '/client/components/settings/translationBody.jade';
+import '/client/components/settings/apiTokens.jade';
 
 import '/client/components/settings/adminReports.js';
 import '/client/components/settings/attachments.js';
@@ -32,6 +33,7 @@ import '/client/components/settings/settingHeader.js';
 import '/client/components/settings/problemsSummary.jade';
 import '/client/components/settings/problemsSummary.js';
 import '/client/components/settings/translationBody.js';
+import '/client/components/settings/apiTokens.js';
 
 // adminReports.css was missing here, so NONE of the Admin Panel report styling
 // was in the bundle (package.json sets meteor.mainModule, so a CSS file that is
@@ -48,6 +50,7 @@ import '/client/components/settings/settingBody.css';
 import '/client/components/settings/settingHeader.css';
 import '/client/components/settings/tablePage.css';
 import '/client/components/settings/translationBody.css';
+import '/client/components/settings/apiTokens.css';
 
 // Admin glass surfaces follow the feature's table and panel styles.
 import '/client/components/main/appleGlassPastel.css';

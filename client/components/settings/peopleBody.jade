@@ -27,6 +27,8 @@ template(name="people")
             +spinner
           else if registrationSetting.get
             +general
+          else if apiTokensSetting.get
+            +apiTokenSettings(isAdmin=true)
           else if emailSetting.get
             +email
           else if orgSetting.get

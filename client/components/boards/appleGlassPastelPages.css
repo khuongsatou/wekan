@@ -622,6 +622,305 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
   transform: translateY(-1px);
 }
 
+body.board-color-appleglasspastel .board-sidebar.sidebar.is-open,
+body:has(.board-wrapper.board-color-appleglasspastel) .board-sidebar.sidebar.is-open {
+  animation: agp-sidebar-slide-in 0.28s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+body.board-color-appleglasspastel .sidebar-xmark,
+body:has(.board-wrapper.board-color-appleglasspastel) .sidebar-xmark {
+  border-radius: var(--agp-radius-pill);
+  transition: transform 0.2s var(--agp-spring), background-color 0.18s ease;
+}
+
+body.board-color-appleglasspastel .sidebar-xmark:hover,
+body:has(.board-wrapper.board-color-appleglasspastel) .sidebar-xmark:hover {
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+@media screen and (min-width: 801px) {
+  /* Shell v3 Liquid Glass hover-collapsible icon rail:
+   * Desktop defaults to compact 72px icon rail to maximize screen real estate for boards/cards,
+   * smoothly expanding to 264px on hover or focus-within with spring cubic-bezier(0.32, 0.72, 0, 1). */
+  body.board-color-appleglasspastel .boards-left-menu {
+    width: 72px;
+    min-width: 72px;
+    max-width: 72px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 8px 6px;
+    box-sizing: border-box;
+    transition: width 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+                min-width 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+                max-width 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+                box-shadow 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+                background-color 0.3s ease;
+    will-change: width, box-shadow;
+    z-index: 40;
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu:hover,
+  body.board-color-appleglasspastel .boards-left-menu:focus-within {
+    width: 264px;
+    min-width: 264px;
+    max-width: 264px;
+    box-shadow: var(--agp-shadow-flyout);
+  }
+
+  /* Support collapsed state as an icon rail with hover expansion */
+  body.board-color-appleglasspastel .boards-layout.collapsed {
+    grid-template-columns: auto 1fr !important;
+  }
+
+  body.board-color-appleglasspastel .boards-layout.collapsed > .boards-left-menu {
+    display: block !important;
+    width: 72px;
+    min-width: 72px;
+    max-width: 72px;
+  }
+
+  body.board-color-appleglasspastel .boards-layout.collapsed > .boards-left-menu:hover,
+  body.board-color-appleglasspastel .boards-layout.collapsed > .boards-left-menu:focus-within {
+    width: 264px !important;
+    min-width: 264px !important;
+    max-width: 264px !important;
+    box-shadow: var(--agp-shadow-flyout);
+  }
+
+  /* Hide static resize handle since width dynamically expands on hover */
+  body.board-color-appleglasspastel .left-menu-resize-handle {
+    display: none !important;
+  }
+
+  /* Left menu item rail layout */
+  body.board-color-appleglasspastel .boards-left-menu .menu-item a {
+    display: flex;
+    align-items: center;
+    padding: 4px 6px;
+    min-height: 42px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu .menu-item a .menu-label {
+    display: flex;
+    align-items: center;
+    max-width: 44px;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: max-width 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu .menu-item a .emoji-icon {
+    min-width: 44px;
+    width: 44px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 16px;
+    margin: 0;
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu:hover .menu-item a .menu-label,
+  body.board-color-appleglasspastel .boards-left-menu:focus-within .menu-item a .menu-label {
+    max-width: 190px;
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu .menu-item .menu-count {
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+    transition: opacity 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                max-width 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                padding 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu:hover .menu-item .menu-count,
+  body.board-color-appleglasspastel .boards-left-menu:focus-within .menu-item .menu-count {
+    opacity: 1;
+    max-width: 50px;
+    padding: 2px 8px;
+    margin-inline-start: auto;
+    pointer-events: auto;
+  }
+
+  /* Workspace nodes inside rail */
+  body.board-color-appleglasspastel .boards-left-menu .workspace-node-content .js-select-space {
+    display: flex;
+    align-items: center;
+    padding: 4px 6px;
+    min-height: 42px;
+    box-sizing: border-box;
+    max-width: 56px;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: max-width 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu .workspace-node-content .js-select-space i {
+    min-width: 44px;
+    width: 44px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 15px;
+    margin: 0;
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu:hover .workspace-node-content .js-select-space,
+  body.board-color-appleglasspastel .boards-left-menu:focus-within .workspace-node-content .js-select-space {
+    max-width: 190px;
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu .workspace-node-count,
+  body.board-color-appleglasspastel .boards-left-menu .js-workspace-menu {
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                max-width 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu:hover .workspace-node-count,
+  body.board-color-appleglasspastel .boards-left-menu:hover .js-workspace-menu,
+  body.board-color-appleglasspastel .boards-left-menu:focus-within .workspace-node-count,
+  body.board-color-appleglasspastel .boards-left-menu:focus-within .js-workspace-menu {
+    opacity: 1;
+    max-width: 50px;
+    pointer-events: auto;
+  }
+
+  /* Workspaces header rail transition */
+  body.board-color-appleglasspastel .boards-left-menu .workspaces-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 8px;
+    overflow: hidden;
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu .workspaces-header span {
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu:hover .workspaces-header span,
+  body.board-color-appleglasspastel .boards-left-menu:focus-within .workspaces-header span {
+    opacity: 1;
+  }
+
+  /* Divider transition */
+  body.board-color-appleglasspastel .boards-left-menu hr.boards-menu-divider {
+    width: 32px;
+    margin: 10px auto;
+    transition: width 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu:hover hr.boards-menu-divider,
+  body.board-color-appleglasspastel .boards-left-menu:focus-within hr.boards-menu-divider {
+    width: calc(100% - 24px);
+  }
+
+  /* Caret indicator in rail */
+  body.board-color-appleglasspastel .boards-left-menu .left-menu-collapse-indicator {
+    justify-content: center;
+    padding: 6px 0;
+    transition: padding 0.2s ease, justify-content 0.2s ease;
+  }
+
+  body.board-color-appleglasspastel .boards-left-menu:hover .left-menu-collapse-indicator,
+  body.board-color-appleglasspastel .boards-left-menu:focus-within .left-menu-collapse-indicator {
+    justify-content: flex-start;
+    padding: 6px 14px;
+  }
+
+  /* Admin Settings side menu */
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu {
+    width: 72px;
+    min-width: 72px;
+    max-width: 72px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: width 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+                min-width 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+                max-width 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+                box-shadow 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 40;
+  }
+
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu:hover,
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu:focus-within {
+    width: 264px;
+    min-width: 264px;
+    max-width: 264px;
+    box-shadow: var(--agp-shadow-flyout);
+  }
+
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu.collapsed {
+    display: block !important;
+    width: 72px;
+    min-width: 72px;
+    max-width: 72px;
+  }
+
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu.collapsed:hover,
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu.collapsed:focus-within {
+    width: 264px !important;
+    min-width: 264px !important;
+    max-width: 264px !important;
+    box-shadow: var(--agp-shadow-flyout);
+  }
+
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu ul li a {
+    display: flex;
+    align-items: center;
+    padding: 4px 6px;
+    min-height: 42px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu ul li a i {
+    min-width: 44px;
+    width: 44px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 16px;
+    margin: 0;
+  }
+
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu ul li a span {
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                max-width 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu:hover ul li a span,
+  body.board-color-appleglasspastel .setting-content .content-body .side-menu:focus-within ul li a span {
+    opacity: 1;
+    max-width: 190px;
+    margin-inline-start: 8px;
+  }
+}
+
 @media screen and (max-width: 800px) {
   body.board-color-appleglasspastel .boards-layout {
     column-gap: 8px;

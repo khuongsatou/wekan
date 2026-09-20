@@ -1206,6 +1206,17 @@ a:not(.disabled).is-active i.fa {
   }
 }
 
+@keyframes agp-sidebar-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* iOS Safari Mobile Mode Fixes */
 @media screen and (max-width: 800px) {
   /* Prevent scrolling issues on iOS Safari when card popup is open */

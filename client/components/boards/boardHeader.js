@@ -243,8 +243,57 @@ Template.boardHeaderButtons.events({
     event.stopPropagation();
     MultiSelection.disable();
   },
+  'click .js-open-board-more-menu': Popup.open('boardMoreOptions'),
   'click .js-log-in'() {
     FlowRouter.go('atSignIn');
+  },
+});
+
+Template.boardMoreOptionsPopup.helpers({
+  currentBoard() {
+    return Utils.getCurrentBoard();
+  },
+  canModifyBoard() {
+    const currentBoard = Utils.getCurrentBoard();
+    return currentBoard && currentBoard.currentUserCanModify();
+  },
+  watchLevel() {
+    const currentBoard = Utils.getCurrentBoard();
+    return currentBoard && currentBoard.getWatchLevel(Meteor.userId());
+  },
+  watchDisabled() {
+    return false;
+  },
+});
+
+Template.boardMoreOptionsPopup.events({
+  'click .js-opt-sort-cards': Popup.open('cardsSort'),
+  'click .js-opt-toggle-dependencies'() {
+    const currentBoard = Utils.getCurrentBoard();
+    if (currentBoard) {
+      currentBoard.setShowDependencies(!currentBoard.showDependencies);
+    }
+    Popup.back();
+  },
+  'click .js-opt-multiselection'() {
+    const currentCard = Utils.getCurrentCardId();
+    MultiSelection.activate();
+    if (currentCard) {
+      MultiSelection.add(currentCard);
+    }
+    Popup.back();
+  },
+  'click .js-opt-watch-board': Popup.open('boardChangeWatch'),
+  'click .js-opt-change-visibility': Popup.open('boardChangeVisibility'),
+  'click .js-opt-drag-handles'() {
+    const isShow = Session.get('isShowDesktopDragHandles');
+    Session.set('isShowDesktopDragHandles', !isShow);
+    Popup.back();
+  },
+  'click .js-opt-mobile-mode'() {
+    const current = Session.get('wekan-mobile-mode');
+    Session.set('wekan-mobile-mode', !current);
+    Popup.back();
   },
 });
 

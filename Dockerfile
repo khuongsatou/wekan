@@ -11,7 +11,10 @@
 # glibc cannot run the hard-float node-armv6 in the armv6 bundle. The docker job
 # therefore asks this base what it publishes and drops a platform it lacks; see
 # docs/Platforms/FOSS/Container/Docker/CPU-platforms.md.
-FROM debian:trixie
+# Keep the compiler, package manager, release archive and temporary build files
+# out of the shipped image. The final stage below copies only the prepared
+# application and runtime Node.js into a fresh base image.
+FROM debian:trixie AS builder
 LABEL maintainer="wekan"
 LABEL org.opencontainers.image.ref.name="debian"
 LABEL org.opencontainers.image.version="trixie"
@@ -361,6 +364,34 @@ COPY --chmod=644 releases/ferretdb/recovery-bridge.mjs /build/recovery-bridge.mj
 USER wekan
 ENV PORT=8080
 EXPOSE $PORT
+STOPSIGNAL SIGKILL
+WORKDIR /build
+
+CMD ["bash", "/build/wekan-entrypoint.sh"]
+
+# Runtime-only image. Do not ship the builder's apt cache, compiler toolchain,
+# downloaded release archive, npm cache, or staging directory.
+FROM debian:trixie AS runtime
+LABEL maintainer="wekan"
+LABEL org.opencontainers.image.source="https://github.com/wekan/wekan"
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install --assume-yes --no-install-recommends ca-certificates libstdc++6; \
+    rm -rf /var/lib/apt/lists/*; \
+    useradd --user-group --system --create-home --home-dir /home/wekan wekan; \
+    mkdir -p /data; \
+    chown wekan:wekan /data
+
+COPY --from=builder /usr/local/bin/node /usr/local/bin/node
+COPY --from=builder /build /build
+
+USER wekan
+ENV PORT=8080
+ENV WRITABLE_PATH=/data
+EXPOSE 8080
 STOPSIGNAL SIGKILL
 WORKDIR /build
 

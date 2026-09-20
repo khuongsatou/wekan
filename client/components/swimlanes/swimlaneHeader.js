@@ -23,6 +23,19 @@ function swimlaneHeaderCollapsed(check = undefined) {
   }
 }
 
+Template.swimlaneHeader.helpers({
+  isSingleDefaultSwimlane() {
+    const currentBoard = Utils.getCurrentBoard();
+    if (!currentBoard) return false;
+    const swimlanes = currentBoard.swimlanes ? currentBoard.swimlanes() : [];
+    if (swimlanes.length <= 1) {
+      const swimlane = Template.currentData();
+      return !swimlane || !swimlane.title || swimlane.title === 'Default';
+    }
+    return false;
+  },
+});
+
 Template.swimlaneHeader.events({
   'click .js-collapse-swimlane'(event) {
     event.preventDefault();

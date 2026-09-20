@@ -710,6 +710,19 @@ body:has(.board-wrapper.board-color-appleglasspastel) .my-cards-board-badge {
   max-width: max(var(--list-width, 285px), 285px) !important;
 }
 
+.board-color-appleglasspastel.board-wrapper .swimlane.nodragscroll {
+  overflow: hidden !important;
+  background: transparent !important;
+  min-height: 0 !important;
+  border: none !important;
+  height: auto !important;
+}
+
+.board-color-appleglasspastel.board-wrapper .swimlane-header-wrap.is-single-default-swimlane,
+.board-color-appleglasspastel.board-wrapper .swimlane.nodragscroll:has(.is-single-default-swimlane) {
+  display: none !important;
+}
+
 .board-color-appleglasspastel.board-wrapper .swimlane .swimlane-header-wrap {
   background: rgba(255, 255, 255, 0.88);
   border: 1px solid var(--agp-border);
@@ -753,10 +766,10 @@ body:has(.board-wrapper.board-color-appleglasspastel) .my-cards-board-badge {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.96);
+  background: #f8fafc !important;
   border-bottom: 1px solid var(--agp-border);
   border-radius: 16px 16px 0 0;
-  padding: 12px 14px;
+  padding: 10px 14px 8px;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -786,8 +799,9 @@ body:has(.board-wrapper.board-color-appleglasspastel) .my-cards-board-badge {
 }
 
 .board-color-appleglasspastel.board-wrapper .list-header-card-count {
-  background: var(--agp-primary-soft);
-  color: var(--agp-primary);
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+  border: 1px solid #e2e8f0;
   border-radius: 999px;
   padding: 2px 8px;
   font-size: 0.725rem;
@@ -795,8 +809,7 @@ body:has(.board-wrapper.board-color-appleglasspastel) .my-cards-board-badge {
 }
 
 .board-color-appleglasspastel.board-wrapper .list-header[class*="list-header-"] {
-  border-bottom-width: 3px !important;
-  border-bottom-style: solid !important;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 .board-color-appleglasspastel.board-wrapper .list-header .list-header-name span.highlight {
@@ -1104,6 +1117,27 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+}
+
+/* Start Date: Calm Mint/Emerald pastel */
+.board-color-appleglasspastel.board-wrapper .minicard .card-date.start-date {
+  background-color: #ecfdf5 !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
+  color: #047857 !important;
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard .card-date.start-date:hover,
+.board-color-appleglasspastel.board-wrapper .minicard .card-date.start-date.is-active {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+}
+
+/* Received & End Date: Soft Slate pastel */
+.board-color-appleglasspastel.board-wrapper .minicard .card-date.received-date,
+.board-color-appleglasspastel.board-wrapper .minicard .card-date.end-date {
+  background-color: #f1f5f9 !important;
+  border-color: rgba(203, 213, 225, 0.8) !important;
+  color: #475569 !important;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-date.due-date {
@@ -1779,3 +1813,81 @@ body:has(.board-wrapper.board-color-appleglasspastel) .sidebar-xmark:hover {
     background: #fff;
   }
 }
+
+/* ==========================================================================
+ * Header Bar Layout: Clean 1-Row Apple Glass Header & Icon Buttons
+ * ========================================================================== */
+
+body.board-color-appleglasspastel #header-quick-access,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access {
+  flex-wrap: nowrap !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+body.board-color-appleglasspastel #header-quick-access::-webkit-scrollbar,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Secondary toggles grouped into dropdown */
+body.board-color-appleglasspastel #header-quick-access .mobile-mode-toggle,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .mobile-mode-toggle,
+body.board-color-appleglasspastel #header-quick-access .js-toggle-desktop-drag-handles,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .js-toggle-desktop-drag-handles,
+body.board-color-appleglasspastel #header-quick-access .board-header-controls .js-toggle-dependencies,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .board-header-controls .js-toggle-dependencies,
+body.board-color-appleglasspastel #header-quick-access .board-header-controls .js-multiselection-activate,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .board-header-controls .js-multiselection-activate {
+  display: none !important;
+}
+
+/* Clean up button labels into sleek 32px icon buttons */
+body.board-color-appleglasspastel #header-quick-access .board-header-controls .board-header-btn:not(.js-open-board-more-menu) .board-header-btn-label,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .board-header-controls .board-header-btn:not(.js-open-board-more-menu) .board-header-btn-label {
+  display: none !important;
+}
+
+body.board-color-appleglasspastel #header-quick-access .board-header-controls .board-header-btn:not(.js-open-board-more-menu),
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .board-header-controls .board-header-btn:not(.js-open-board-more-menu) {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--agp-radius-pill) !important;
+}
+
+/* Sleek pill styling for More Options dropdown trigger */
+body.board-color-appleglasspastel #header-quick-access .board-header-controls .js-open-board-more-menu,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .board-header-controls .js-open-board-more-menu {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  padding: 0 10px !important;
+  border-radius: var(--agp-radius-pill) !important;
+  font-weight: 500;
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid var(--agp-border) !important;
+  color: var(--agp-heading) !important;
+  transition: all 0.15s var(--agp-spring);
+}
+
+body.board-color-appleglasspastel #header-quick-access .board-header-controls .js-open-board-more-menu:hover,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .board-header-controls .js-open-board-more-menu:hover {
+  background: #ffffff !important;
+  border-color: rgba(94, 106, 210, 0.35) !important;
+  color: var(--agp-primary) !important;
+  box-shadow: 0 2px 8px rgba(94, 106, 210, 0.12);
+}
+

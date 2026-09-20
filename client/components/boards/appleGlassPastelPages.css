@@ -25,13 +25,14 @@ body.board-color-appleglasspastel .boards-left-menu .menu-item a,
 body.board-color-appleglasspastel .workspace-node-content .js-select-space {
   border-radius: var(--agp-radius-card);
   color: var(--agp-muted);
-  transition: background-color 0.16s ease, box-shadow 0.16s ease,
-    color 0.16s ease;
+  transition: background-color 0.18s var(--agp-spring),
+              box-shadow 0.18s var(--agp-spring),
+              color 0.18s var(--agp-spring);
 }
 
 body.board-color-appleglasspastel .boards-left-menu .menu-item a:hover,
 body.board-color-appleglasspastel .workspace-node > .workspace-node-content:hover .js-select-space {
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.88);
   box-shadow: var(--agp-shadow-card);
   color: var(--agp-heading);
 }
@@ -40,8 +41,8 @@ body.board-color-appleglasspastel .boards-left-menu .menu-item.active a,
 body.board-color-appleglasspastel .boards-left-menu .menu-item.active a:hover,
 body.board-color-appleglasspastel .workspace-node.active > .workspace-node-content .js-select-space,
 body.board-color-appleglasspastel .workspace-node.active > .workspace-node-content:hover .js-select-space {
-  background: var(--agp-primary) !important;
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.14);
+  background: linear-gradient(180deg, #6b76e5 0%, #5e6ad2 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), var(--agp-shadow-pill);
   color: #fff;
 }
 
@@ -50,7 +51,7 @@ body.board-color-appleglasspastel .boards-right-grid {
 }
 
 body.board-color-appleglasspastel .boards-right-grid > .admin-pane-title {
-  background: linear-gradient(to right, var(--agp-heading), var(--agp-primary));
+  background: linear-gradient(90deg, #1d1d1f 0%, #4650b8 100%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -93,13 +94,13 @@ body.board-color-appleglasspastel .board-list > li.js-board > .board-list-item >
 
 body.board-color-appleglasspastel .board-list > li.js-board:hover > .board-list-item {
   background: rgba(255, 255, 255, 0.96) !important;
-  box-shadow: 0 10px 28px -4px rgba(37, 99, 235, 0.12), 0 2px 8px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), var(--agp-shadow-card-hover);
   transform: translateY(-3px);
-  border-color: rgba(37, 99, 235, 0.24);
+  border-color: rgba(94, 106, 210, 0.35);
 }
 
 body.board-color-appleglasspastel .board-list .js-add-board .label {
-  border: 2px dashed rgba(37, 99, 235, 0.35) !important;
+  border: 2px dashed rgba(94, 106, 210, 0.35) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -107,19 +108,25 @@ body.board-color-appleglasspastel .board-list .js-add-board .label {
   color: var(--agp-primary) !important;
   font-weight: 600;
   gap: 8px;
+  transition: all 0.2s var(--agp-spring);
 }
 
 body.board-color-appleglasspastel .board-list .js-add-board .label:hover {
-  background: rgba(37, 99, 235, 0.06) !important;
+  background: var(--agp-primary-faint) !important;
   border-color: var(--agp-primary) !important;
   color: var(--agp-primary-dark) !important;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+  box-shadow: 0 8px 24px rgba(94, 106, 210, 0.18);
   transform: translateY(-2px);
 }
 
 body.board-color-appleglasspastel .js-star-board.is-star-active,
 body.board-color-appleglasspastel .js-star-board.is-star-active i {
   color: #f59e0b !important;
+  transition: transform 0.2s var(--agp-spring);
+}
+
+body.board-color-appleglasspastel .js-star-board:hover i {
+  transform: scale(1.15);
 }
 
 body.board-color-appleglasspastel .board-list > li.js-board .js-open-board > .board-list-thumbnail {
@@ -291,22 +298,19 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
 /* Kanban structural glass. Minicards and lists are deliberately solid-ish and do not use
  * backdrop-filter: per-card and per-list filters destroy drag and scroll latency. */
 .board-color-appleglasspastel.board-wrapper .list {
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(229, 231, 235, 0.75);
-  border-radius: var(--agp-radius-panel);
-  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
-  /* Apple Glass lists are visual panels, so they need the same breathing room
-   * as the cards inside them. Keep this non-important so mobile-mode can still
-   * collapse lists to full-width stacked sprint panels. */
+  border: 1px solid var(--agp-border);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 4px 20px -2px rgba(15, 23, 42, 0.05);
   margin-block: 10px;
   margin-inline: 8px;
   padding-bottom: 6px;
 }
 
 .board-color-appleglasspastel.board-wrapper .swimlane .swimlane-header-wrap {
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.78);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -316,8 +320,8 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
   top: 0;
   z-index: 10;
   background: rgba(255, 255, 255, 0.96);
-  border-bottom: 1px solid rgba(229, 231, 235, 0.85);
-  border-radius: var(--agp-radius-panel) var(--agp-radius-panel) 0 0;
+  border-bottom: 1px solid var(--agp-border);
+  border-radius: 16px 16px 0 0;
   padding: 12px 14px;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -332,7 +336,7 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
 }
 
 .board-color-appleglasspastel.board-wrapper .list-header-card-count {
-  background: var(--agp-primary-faint);
+  background: var(--agp-primary-soft);
   color: var(--agp-primary);
   border-radius: 999px;
   padding: 2px 8px;
@@ -351,41 +355,39 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
 
 .board-color-appleglasspastel.board-wrapper .minicard {
   background: #ffffff;
-  border: 1px solid rgba(229, 231, 235, 0.85);
-  border-radius: var(--agp-radius-card);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 3px 8px -1px rgba(15, 23, 42, 0.02);
+  border: 1px solid var(--agp-border);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 1px 3px rgba(15, 23, 42, 0.04), 0 3px 8px -1px rgba(15, 23, 42, 0.02);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  /* `.minicard-wrapper` already owns the drag/drop spacing. The legacy
-   * desktop/mobile rules add another bottom margin to the painted card, which
-   * made the visible gap 16-17px. Keep spacing on one structural layer. */
   margin-bottom: 0 !important;
   padding: 10px 12px;
-  transition: background-color 0.18s ease, border-color 0.18s ease,
-    box-shadow 0.18s ease, transform 0.18s var(--agp-spring);
+  transition: border-color 0.18s var(--agp-spring),
+              box-shadow 0.18s var(--agp-spring),
+              transform 0.12s ease-out;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard:hover:not(.minicard-composer),
 .board-color-appleglasspastel.board-wrapper .draggable-hover-card .minicard {
   background: #ffffff;
-  border-color: rgba(37, 99, 235, 0.28);
-  box-shadow: 0 6px 18px -2px rgba(37, 99, 235, 0.1), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  border-color: rgba(94, 106, 210, 0.38);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), var(--agp-shadow-card-hover);
   transform: translateY(-2px);
 }
 
 .board-color-appleglasspastel.board-wrapper .is-selected .minicard {
   background: var(--agp-primary-faint);
-  border: 2px solid var(--agp-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  border: 1.5px solid var(--agp-primary);
+  box-shadow: 0 0 0 3px rgba(94, 106, 210, 0.22), 0 6px 18px rgba(94, 106, 210, 0.12);
   transform: none;
 }
 
 .board-color-appleglasspastel.board-wrapper .list-body .open-minicard-composer,
 .board-color-appleglasspastel.board-wrapper .list.list-composer .open-list-composer {
-  border: 1px dashed rgba(37, 99, 235, 0.32);
+  border: 1px dashed rgba(94, 106, 210, 0.35);
   border-radius: 10px;
   color: var(--agp-primary);
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.65);
   padding: 8px 12px;
   margin: 6px 2px 2px;
   font-size: 0.85rem;
@@ -395,15 +397,15 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
   justify-content: center;
   gap: 6px;
   cursor: pointer;
-  transition: all 0.16s ease;
+  transition: all 0.18s var(--agp-spring);
 }
 
 .board-color-appleglasspastel.board-wrapper .list-body .open-minicard-composer:hover,
 .board-color-appleglasspastel.board-wrapper .list.list-composer .open-list-composer:hover {
-  background: rgba(37, 99, 235, 0.08);
+  background: var(--agp-primary-faint);
   border-color: var(--agp-primary);
   color: var(--agp-primary-dark);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 2px 10px rgba(94, 106, 210, 0.18);
   transform: translateY(-1px);
 }
 
@@ -433,10 +435,10 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-label {
-  border-radius: 6px;
+  border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
-  padding: 2px 7px;
+  padding: 2px 8px;
   margin-inline-end: 4px;
   margin-bottom: 4px;
   display: inline-flex;
@@ -453,59 +455,59 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .badges .badge {
-  border-radius: 6px;
-  padding: 2px 6px;
-  background: #f1f5f9;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  color: #475569;
+  border-radius: 999px;
+  padding: 2px 8px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--agp-border);
+  color: var(--agp-muted);
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 0.725rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.25;
-  transition: all 0.15s ease;
+  transition: all 0.15s var(--agp-spring);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .badges .badge.is-finished {
   background: var(--agp-success-bg);
-  border-color: rgba(16, 185, 129, 0.2);
+  border-color: rgba(29, 158, 117, 0.3);
   color: var(--agp-success-text);
   font-weight: 600;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .badges .badge:hover {
-  background: #e2e8f0;
+  background: rgba(0, 0, 0, 0.08);
   color: var(--agp-heading);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-date {
-  border-radius: 6px;
+  border-radius: 999px;
   font-size: 0.725rem;
-  font-weight: 500;
-  padding: 2px 6px;
+  font-weight: 600;
+  padding: 2px 8px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
   border: 1px solid transparent;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s var(--agp-spring);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-date.due-date {
   background-color: var(--agp-warning-bg);
-  border-color: rgba(245, 158, 11, 0.25);
+  border-color: rgba(218, 138, 0, 0.3);
   color: var(--agp-warning-text);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .date.due-complete .card-date.due-date {
   background-color: var(--agp-success-bg);
-  border-color: rgba(16, 185, 129, 0.25);
+  border-color: rgba(29, 158, 117, 0.3);
   color: var(--agp-success-text);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-date.due-date.due-overdue {
   background-color: var(--agp-danger-bg);
-  border-color: rgba(239, 68, 68, 0.25);
+  border-color: rgba(226, 75, 74, 0.3);
   color: var(--agp-danger-text);
   font-weight: 600;
 }
@@ -538,10 +540,10 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard-wrapper.placeholder {
-  background: rgba(37, 99, 235, 0.05) !important;
-  border: 2px dashed rgba(37, 99, 235, 0.35) !important;
+  background: rgba(94, 106, 210, 0.05) !important;
+  border: 2px dashed rgba(94, 106, 210, 0.4) !important;
   border-radius: var(--agp-radius-card);
-  box-shadow: inset 0 2px 6px rgba(37, 99, 235, 0.04);
+  box-shadow: inset 0 2px 6px rgba(94, 106, 210, 0.04);
 }
 
 /* Card Details Modal Polish */
@@ -558,14 +560,22 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
 }
 
 .board-color-appleglasspastel.board-wrapper .card-details .close-card-details {
-  border-radius: 8px;
-  transition: background-color 0.15s ease, color 0.15s ease;
-  padding: 4px;
+  border-radius: 999px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s var(--agp-spring),
+              color 0.15s var(--agp-spring),
+              transform 0.12s ease-out;
+  padding: 0;
 }
 
 .board-color-appleglasspastel.board-wrapper .card-details .close-card-details:hover {
-  background: rgba(239, 68, 68, 0.12);
-  color: #dc2626;
+  background: rgba(226, 75, 74, 0.12);
+  color: #c93a3a;
+  transform: scale(1.08);
 }
 
 .board-color-appleglasspastel.board-wrapper .card-details .checklist-title {
@@ -582,29 +592,34 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
 }
 
 .board-color-appleglasspastel.board-wrapper .card-details .checklist-progress-bar .checklist-progress-fill {
-  background: linear-gradient(to right, var(--agp-primary), #10b981);
+  background: linear-gradient(to right, var(--agp-primary), #178563);
   height: 100%;
   border-radius: 999px;
-  transition: width 0.3s ease;
+  transition: width 0.3s var(--agp-spring);
 }
 
 .board-color-appleglasspastel.board-wrapper .card-details-item-buttons .button-link,
 .board-color-appleglasspastel.board-wrapper .card-details-item-buttons a.button-link {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(229, 231, 235, 0.85);
-  border-radius: var(--agp-radius-control);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--agp-border);
+  border-radius: 999px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   color: var(--agp-heading);
   font-weight: 500;
-  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  padding: 6px 14px;
+  transition: background-color 0.15s var(--agp-spring),
+              border-color 0.15s var(--agp-spring),
+              box-shadow 0.15s var(--agp-spring),
+              transform 0.12s ease-out;
 }
 
 .board-color-appleglasspastel.board-wrapper .card-details-item-buttons .button-link:hover,
 .board-color-appleglasspastel.board-wrapper .card-details-item-buttons a.button-link:hover {
   background: #fff;
-  border-color: var(--agp-primary-soft);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
-  color: var(--agp-primary-dark);
+  border-color: rgba(94, 106, 210, 0.35);
+  box-shadow: 0 4px 14px rgba(94, 106, 210, 0.12);
+  color: var(--agp-primary);
+  transform: translateY(-1px);
 }
 
 @media screen and (max-width: 800px) {

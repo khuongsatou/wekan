@@ -9,37 +9,46 @@
 .board-color-appleglasspastel,
 body:has(.board-wrapper.board-color-appleglasspastel) {
   --agp-primary: #2563eb;
-  --agp-primary-hover: #1d4ed8;
+  --agp-primary: #5e6ad2;
+  --agp-primary-hover: #6b76e5;
   --agp-primary-dark: #1e3a8a;
-  --agp-primary-soft: #dbeafe;
-  --agp-primary-faint: #eff6ff;
+  --agp-primary-dark: #4650b8;
+  --agp-primary-soft: rgba(94, 106, 210, 0.16);
+  --agp-primary-faint: rgba(94, 106, 210, 0.08);
+  --agp-primary-glow: rgba(94, 106, 210, 0.28);
   --agp-foreground: #111827;
   --agp-heading: #0f172a;
   --agp-muted: #6b7280;
-  --agp-border: #e5e7eb;
+  --agp-border: rgba(0, 0, 0, 0.08);
+  --agp-border-strong: rgba(0, 0, 0, 0.16);
   --agp-glass: rgba(255, 255, 255, 0.65);
-  --agp-glass-soft: rgba(255, 255, 255, 0.45);
-  --agp-glass-solid: rgba(255, 255, 255, 0.95);
-  --agp-glass-border: rgba(255, 255, 255, 0.55);
-  --agp-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --agp-shadow-island: 0 8px 30px rgba(0, 0, 0, 0.06);
-  --agp-shadow-flyout: 0 20px 60px rgba(0, 0, 0, 0.12);
-  --agp-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --agp-glass: rgba(255, 255, 255, 0.72);
+  --agp-glass-soft: rgba(255, 255, 255, 0.48);
+  --agp-glass-solid: rgba(255, 255, 255, 0.96);
+  --agp-glass-border: rgba(255, 255, 255, 0.75);
+  --agp-glass-edge: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  --agp-shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.04);
   --agp-shadow-lifted: 0 10px 28px -4px rgba(0, 0, 0, 0.1), 0 2px 8px -2px rgba(0, 0, 0, 0.05);
-  --agp-focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.35);
-  --agp-success-bg: rgba(16, 185, 129, 0.12);
-  --agp-success-text: #059669;
-  --agp-warning-bg: rgba(245, 158, 11, 0.14);
-  --agp-warning-text: #d97706;
-  --agp-danger-bg: rgba(239, 68, 68, 0.12);
-  --agp-danger-text: #dc2626;
-  --agp-radius-control: 12px;
+  --agp-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --agp-shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.05), 0 12px 32px rgba(94, 106, 210, 0.14);
+  --agp-shadow-pill: 0 4px 14px rgba(94, 106, 210, 0.28), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --agp-shadow-island: 0 8px 30px rgba(0, 0, 0, 0.06);
+  --agp-shadow-flyout: 0 16px 48px rgba(0, 0, 0, 0.12);
+  --agp-shadow-modal: 0 24px 80px rgba(0, 0, 0, 0.18);
+  --agp-focus-ring: 0 0 0 3.5px rgba(94, 106, 210, 0.22);
+  --agp-success-bg: rgba(29, 158, 117, 0.12);
+  --agp-success-text: #178563;
+  --agp-warning-bg: rgba(218, 138, 0, 0.12);
+  --agp-warning-text: #b47100;
+  --agp-danger-bg: rgba(226, 75, 74, 0.12);
+  --agp-danger-text: #c93a3a;
+  --agp-radius-control: 10px;
   --agp-radius-card: 14px;
   --agp-radius-panel: 18px;
   --agp-radius-island: 24px;
-  --agp-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --theme-accent: #2563eb;
-  --theme-accent-fill: #2563eb;
+  --agp-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --theme-accent: #5e6ad2;
+  --theme-accent-fill: #5e6ad2;
   color: var(--agp-foreground);
 }
 
@@ -170,58 +179,47 @@ body.board-color-appleglasspastel #header .board-header-btn,
 body.board-color-appleglasspastel #header-quick-access .board-header-btn,
 body.board-color-appleglasspastel #header-quick-access .header-user-bar,
 body.board-color-appleglasspastel #header-quick-access .header-quick-access-dropdown {
-  border-radius: var(--agp-radius-control);
-  transition: background-color 0.18s ease, box-shadow 0.18s ease,
-    transform 0.15s ease-out;
+  border-radius: 999px;
+  padding: 0 12px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--agp-border);
+  box-shadow: var(--agp-glass-edge), var(--agp-shadow-subtle);
+  transition: background-color 0.18s var(--agp-spring),
+              border-color 0.18s var(--agp-spring),
+              box-shadow 0.18s var(--agp-spring),
+              transform 0.12s ease-out;
 }
 
 body.board-color-appleglasspastel #header .board-header-btn:hover,
 body.board-color-appleglasspastel #header-quick-access .board-header-btn:hover,
 body.board-color-appleglasspastel #header-quick-access li:hover {
-  background: rgba(255, 255, 255, 0.78) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(94, 106, 210, 0.35);
   box-shadow: var(--agp-shadow-card);
 }
 
 body.board-color-appleglasspastel #header .board-header-btn.active,
 body.board-color-appleglasspastel #header .setting-header-btn.active,
 body.board-color-appleglasspastel #header #header-main-bar .board-header-btn.emphasis,
-body.board-color-appleglasspastel #header-quick-access li.current {
+body.board-color-appleglasspastel #header-quick-access li.current,
+.board-color-appleglasspastel#header .board-header-btn.active,
+.board-color-appleglasspastel#header .setting-header-btn.active,
+.board-color-appleglasspastel#header #header-main-bar .board-header-btn.emphasis,
+.board-color-appleglasspastel#header-quick-access li.current {
   background: var(--agp-primary) !important;
-  border-color: var(--agp-primary);
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.16);
+  background: linear-gradient(180deg, #6b76e5 0%, #5e6ad2 100%) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), var(--agp-shadow-pill) !important;
   color: #fff !important;
 }
 
 body.board-color-appleglasspastel #header .board-header-btn.active *,
 body.board-color-appleglasspastel #header .setting-header-btn.active *,
 body.board-color-appleglasspastel #header #header-main-bar .board-header-btn.emphasis *,
-body.board-color-appleglasspastel #header-quick-access li.current * {
-  color: #fff !important;
-}
-
-body.board-color-appleglasspastel #header .board-header-btn.js-filter-active,
-.board-color-appleglasspastel#header .board-header-btn.js-filter-active {
-  background: #dbeafe !important;
-  border-color: rgba(37, 99, 235, 0.35) !important;
-  color: #1d4ed8 !important;
-  font-weight: 600;
-}
-
-body.board-color-appleglasspastel #header .board-header-btn.js-filter-active *,
-.board-color-appleglasspastel#header .board-header-btn.js-filter-active * {
-  color: #1d4ed8 !important;
-}
-
-.board-color-appleglasspastel#header .board-header-btn.active,
-.board-color-appleglasspastel#header .setting-header-btn.active,
-.board-color-appleglasspastel#header #header-main-bar .board-header-btn.emphasis,
-.board-color-appleglasspastel#header-quick-access li.current {
-  background: var(--agp-primary) !important;
-  border-color: var(--agp-primary);
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.16);
-  color: #fff !important;
-}
-
+body.board-color-appleglasspastel #header-quick-access li.current *,
 .board-color-appleglasspastel#header .board-header-btn.active *,
 .board-color-appleglasspastel#header .setting-header-btn.active *,
 .board-color-appleglasspastel#header #header-main-bar .board-header-btn.emphasis *,
@@ -229,17 +227,40 @@ body.board-color-appleglasspastel #header .board-header-btn.js-filter-active *,
   color: #fff !important;
 }
 
+body.board-color-appleglasspastel #header .board-header-btn.js-filter-active,
+.board-color-appleglasspastel#header .board-header-btn.js-filter-active {
+  background: var(--agp-primary-soft) !important;
+  border-color: rgba(94, 106, 210, 0.4) !important;
+  color: var(--agp-primary) !important;
+  font-weight: 600;
+  box-shadow: 0 0 0 1px rgba(94, 106, 210, 0.25);
+}
+
+body.board-color-appleglasspastel #header .board-header-btn.js-filter-active *,
+.board-color-appleglasspastel#header .board-header-btn.js-filter-active * {
+  color: var(--agp-primary) !important;
+}
+
 /* Floating surfaces use a more opaque glass than structural panels so text and
  * form controls stay readable over every point of the pastel mesh. */
 .board-color-appleglasspastel.pop-over,
 body.board-color-appleglasspastel .pop-over,
-body.board-color-appleglasspastel #modal .modal-container,
 body.board-color-appleglasspastel .notifications-drawer,
 body.board-color-appleglasspastel .global-search-results {
   background: var(--agp-glass-solid) !important;
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--agp-glass-border);
   border-radius: var(--agp-radius-panel);
   box-shadow: var(--agp-shadow-flyout);
+  color: var(--agp-foreground);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+}
+
+body.board-color-appleglasspastel #modal .modal-container {
+  background: var(--agp-glass-solid) !important;
+  border: 1px solid var(--agp-glass-border);
+  border-radius: 20px;
+  box-shadow: var(--agp-shadow-modal);
   color: var(--agp-foreground);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
@@ -249,8 +270,8 @@ body.board-color-appleglasspastel .global-search-results {
 body.board-color-appleglasspastel .pop-over .header,
 body.board-color-appleglasspastel #modal .modal-container > h2,
 body.board-color-appleglasspastel #modal .modal-container > h3 {
-  background: rgba(239, 246, 255, 0.72) !important;
-  border-bottom: 1px solid rgba(229, 231, 235, 0.72);
+  background: rgba(245, 247, 255, 0.85) !important;
+  border-bottom: 1px solid var(--agp-border);
   color: var(--agp-heading) !important;
 }
 
@@ -258,7 +279,8 @@ body.board-color-appleglasspastel #modal .modal-container > h3 {
 body.board-color-appleglasspastel .pop-over .pop-over-list li > a {
   border-radius: 10px;
   color: var(--agp-foreground);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s var(--agp-spring),
+              color 0.15s var(--agp-spring);
 }
 
 .board-color-appleglasspastel.pop-over .pop-over-list li > a:not(.disabled):hover,
@@ -267,19 +289,21 @@ body.board-color-appleglasspastel .pop-over .pop-over-list li > a:not(.disabled)
 body.board-color-appleglasspastel .pop-over .pop-over-list li > a.current {
   background: var(--agp-primary-soft);
   color: var(--agp-primary-dark);
+  font-weight: 600;
 }
 
 body.board-color-appleglasspastel input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
 body.board-color-appleglasspastel textarea,
 body.board-color-appleglasspastel select,
 body.board-color-appleglasspastel .wekan-form-control {
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(229, 231, 235, 0.92);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--agp-border-strong);
   border-radius: var(--agp-radius-control);
-  box-shadow: none;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
   color: var(--agp-foreground);
-  transition: background-color 0.18s ease, border-color 0.18s ease,
-    box-shadow 0.18s ease;
+  transition: background-color 0.15s ease,
+              border-color 0.15s ease,
+              box-shadow 0.15s ease;
 }
 
 body.board-color-appleglasspastel input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):focus,
@@ -288,7 +312,7 @@ body.board-color-appleglasspastel select:focus,
 body.board-color-appleglasspastel .wekan-form-control:focus {
   background: #fff;
   border-color: var(--agp-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+  box-shadow: 0 0 0 3.5px rgba(94, 106, 210, 0.22);
   outline: none;
 }
 
@@ -296,33 +320,63 @@ body.board-color-appleglasspastel button.primary,
 body.board-color-appleglasspastel input.primary,
 body.board-color-appleglasspastel input[type="submit"].primary,
 body.board-color-appleglasspastel .sidebar .sidebar-content .sidebar-btn {
-  background: var(--agp-primary) !important;
-  border: 1px solid var(--agp-primary) !important;
+  background: linear-gradient(180deg, #6b76e5 0%, #5e6ad2 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
   border-radius: 999px !important;
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), var(--agp-shadow-pill);
   color: #fff !important;
-  transition: background-color 0.18s ease, box-shadow 0.18s ease,
-    transform 0.15s ease-out;
+  font-weight: 500;
+  transition: background-color 0.18s var(--agp-spring),
+              box-shadow 0.18s var(--agp-spring),
+              transform 0.12s ease-out;
 }
 
 body.board-color-appleglasspastel button.primary:hover,
 body.board-color-appleglasspastel input.primary:hover,
 body.board-color-appleglasspastel input[type="submit"].primary:hover,
 body.board-color-appleglasspastel .sidebar .sidebar-content .sidebar-btn:hover {
-  background: var(--agp-primary-hover) !important;
-  border-color: var(--agp-primary-hover) !important;
+  background: linear-gradient(180deg, #7883ee 0%, #6b76e5 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 20px rgba(94, 106, 210, 0.38);
 }
 
-body.board-color-appleglasspastel button:active,
+/* Tactile press feedback (.press) from mtips5s_motions */
+body.board-color-appleglasspastel .press,
+body.board-color-appleglasspastel button,
+body.board-color-appleglasspastel .board-header-btn,
+body.board-color-appleglasspastel .pop-over-list a {
+  transition: transform 0.12s ease-out;
+}
+
+body.board-color-appleglasspastel .press:active,
+body.board-color-appleglasspastel button:active:not(:disabled),
 body.board-color-appleglasspastel .board-header-btn:active,
-body.board-color-appleglasspastel .pop-over-list a:active {
-  transform: scale(0.96);
+body.board-color-appleglasspastel .pop-over-list a:active,
+body.board-color-appleglasspastel .board-list > li.js-board:active,
+body.board-color-appleglasspastel .minicard:active {
+  transform: scale(0.97) !important;
 }
 
 body.board-color-appleglasspastel :focus-visible {
-  outline: 2px solid var(--agp-primary);
-  outline-offset: 2px;
+  outline: none;
   box-shadow: var(--agp-focus-ring);
+}
+
+/* Micro-animations and utility tokens from mtips5s_motions */
+body.board-color-appleglasspastel .transition-spring {
+  transition: all 0.25s var(--agp-spring) !important;
+}
+
+body.board-color-appleglasspastel .title-gradient {
+  background: linear-gradient(90deg, #1d1d1f 0%, #4650b8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+body.board-color-appleglasspastel .motion-pulse,
+body.board-color-appleglasspastel .apl-pulse {
+  animation: motion-pulse 1.8s ease-in-out infinite;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {

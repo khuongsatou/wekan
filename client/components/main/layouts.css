@@ -1217,6 +1217,17 @@ a:not(.disabled).is-active i.fa {
   }
 }
 
+@keyframes agp-modal-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 /* iOS Safari Mobile Mode Fixes */
 @media screen and (max-width: 800px) {
   /* Prevent scrolling issues on iOS Safari when card popup is open */

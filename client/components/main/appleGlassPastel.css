@@ -52,7 +52,7 @@ body.board-color-appleglasspastel,
     radial-gradient(55% 50% at 95% 95%, rgba(200, 230, 255, 0.5), transparent 60%),
     radial-gradient(70% 60% at 0% 100%, rgba(230, 215, 255, 0.5), transparent 65%),
     linear-gradient(180deg, #f6f7fb 0%, #eef0f7 100%);
-  background-attachment: fixed;
+  background-size: cover;
 }
 
 body.board-color-appleglasspastel {

@@ -264,9 +264,13 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
   color: var(--agp-primary-dark);
 }
 
-/* Kanban structural glass. Minicards are deliberately solid-ish and do not use
- * backdrop-filter: hundreds of per-card filters hurt drag and scroll latency. */
+/* Kanban structural glass. Minicards and lists are deliberately solid-ish and do not use
+ * backdrop-filter: per-card and per-list filters destroy drag and scroll latency. */
 .board-color-appleglasspastel.board-wrapper .list {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid rgba(255, 255, 255, 0.65);
   border-radius: var(--agp-radius-panel);
   box-shadow: var(--agp-shadow-island);
   /* Apple Glass lists are visual panels, so they need the same breathing room
@@ -274,6 +278,12 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
    * collapse lists to full-width stacked sprint panels. */
   margin-block: 10px;
   margin-inline: 8px;
+}
+
+.board-color-appleglasspastel.board-wrapper .swimlane .swimlane-header-wrap {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .board-color-appleglasspastel.board-wrapper .list-header {

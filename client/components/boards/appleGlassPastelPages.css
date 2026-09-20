@@ -788,6 +788,16 @@ body:has(.board-wrapper.board-color-appleglasspastel) .my-cards-board-badge {
   font-weight: 600;
 }
 
+.board-color-appleglasspastel.board-wrapper .list-header[class*="list-header-"] {
+  border-bottom-width: 3px !important;
+  border-bottom-style: solid !important;
+}
+
+.board-color-appleglasspastel.board-wrapper .list-header .list-header-name span.highlight {
+  color: var(--agp-danger-text);
+  font-weight: 700;
+}
+
 .board-color-appleglasspastel.board-wrapper .list-body {
   padding: 8px 10px;
 }

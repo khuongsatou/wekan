@@ -65,7 +65,8 @@ body.board-color-appleglasspastel,
   background-size: cover;
 }
 
-body.board-color-appleglasspastel {
+body.board-color-appleglasspastel,
+body:has(.board-wrapper.board-color-appleglasspastel) {
   color: var(--agp-foreground);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -78,30 +79,40 @@ body.board-color-appleglasspastel h2,
 body.board-color-appleglasspastel h3,
 body.board-color-appleglasspastel h4,
 body.board-color-appleglasspastel h5,
-body.board-color-appleglasspastel h6 {
+body.board-color-appleglasspastel h6,
+body:has(.board-wrapper.board-color-appleglasspastel) h1,
+body:has(.board-wrapper.board-color-appleglasspastel) h2,
+body:has(.board-wrapper.board-color-appleglasspastel) h3,
+body:has(.board-wrapper.board-color-appleglasspastel) h4,
+body:has(.board-wrapper.board-color-appleglasspastel) h5,
+body:has(.board-wrapper.board-color-appleglasspastel) h6 {
   color: var(--agp-heading);
   font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Arial, sans-serif;
   letter-spacing: -0.02em;
 }
 
-body.board-color-appleglasspastel ::-webkit-scrollbar {
+body.board-color-appleglasspastel ::-webkit-scrollbar,
+body:has(.board-wrapper.board-color-appleglasspastel) ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-body.board-color-appleglasspastel ::-webkit-scrollbar-track {
+body.board-color-appleglasspastel ::-webkit-scrollbar-track,
+body:has(.board-wrapper.board-color-appleglasspastel) ::-webkit-scrollbar-track {
   background: transparent;
 }
 
-body.board-color-appleglasspastel ::-webkit-scrollbar-thumb {
+body.board-color-appleglasspastel ::-webkit-scrollbar-thumb,
+body:has(.board-wrapper.board-color-appleglasspastel) ::-webkit-scrollbar-thumb {
   background: rgba(37, 99, 235, 0.28);
   border: 2px solid transparent;
   border-radius: 999px;
   background-clip: padding-box;
 }
 
-body.board-color-appleglasspastel ::-webkit-scrollbar-thumb:hover {
+body.board-color-appleglasspastel ::-webkit-scrollbar-thumb:hover,
+body:has(.board-wrapper.board-color-appleglasspastel) ::-webkit-scrollbar-thumb:hover {
   background: rgba(37, 99, 235, 0.5);
   background-clip: padding-box;
 }
@@ -179,7 +190,15 @@ body.board-color-appleglasspastel #header-quick-access .header-logo img {
 body.board-color-appleglasspastel #header .board-header-btn,
 body.board-color-appleglasspastel #header-quick-access .board-header-btn,
 body.board-color-appleglasspastel #header-quick-access .header-user-bar,
-body.board-color-appleglasspastel #header-quick-access .header-quick-access-dropdown {
+body.board-color-appleglasspastel #header-quick-access .header-quick-access-dropdown,
+.board-color-appleglasspastel#header .board-header-btn,
+.board-color-appleglasspastel#header-quick-access .board-header-btn,
+.board-color-appleglasspastel#header-quick-access .header-user-bar,
+.board-color-appleglasspastel#header-quick-access .header-quick-access-dropdown,
+body:has(.board-wrapper.board-color-appleglasspastel) #header .board-header-btn,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .board-header-btn,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .header-user-bar,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .header-quick-access-dropdown {
   border-radius: 999px;
   padding: 0 12px;
   height: 32px;
@@ -196,7 +215,13 @@ body.board-color-appleglasspastel #header-quick-access .header-quick-access-drop
 
 body.board-color-appleglasspastel #header .board-header-btn:hover,
 body.board-color-appleglasspastel #header-quick-access .board-header-btn:hover,
-body.board-color-appleglasspastel #header-quick-access li:hover {
+body.board-color-appleglasspastel #header-quick-access li:hover,
+.board-color-appleglasspastel#header .board-header-btn:hover,
+.board-color-appleglasspastel#header-quick-access .board-header-btn:hover,
+.board-color-appleglasspastel#header-quick-access li:hover,
+body:has(.board-wrapper.board-color-appleglasspastel) #header .board-header-btn:hover,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access .board-header-btn:hover,
+body:has(.board-wrapper.board-color-appleglasspastel) #header-quick-access li:hover {
   background: rgba(255, 255, 255, 0.88) !important;
   border-color: rgba(94, 106, 210, 0.35);
   box-shadow: var(--agp-shadow-card);

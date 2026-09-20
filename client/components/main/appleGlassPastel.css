@@ -47,6 +47,11 @@ body:has(.board-wrapper.board-color-appleglasspastel) {
   --agp-radius-panel: 18px;
   --agp-radius-island: 24px;
   --agp-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  /* Legacy gradient tokens (retired in favor of solid modern tech slate canvas):
+   * rgba(255, 200, 220, 0.55)
+   * rgba(180, 215, 255, 0.55)
+   * linear-gradient(180deg, #f6f7fb 0%, #eef0f7 100%)
+   */
   --theme-accent: #5e6ad2;
   --theme-accent-fill: #5e6ad2;
   color: var(--agp-foreground);
@@ -55,12 +60,8 @@ body:has(.board-wrapper.board-color-appleglasspastel) {
 body.board-color-appleglasspastel,
 .board-color-appleglasspastel.board-wrapper,
 .board-color-appleglasspastel .setting-content {
-  background:
-    radial-gradient(60% 50% at 85% 5%, rgba(255, 200, 220, 0.55), transparent 60%),
-    radial-gradient(55% 50% at 5% 25%, rgba(180, 215, 255, 0.55), transparent 65%),
-    radial-gradient(55% 50% at 95% 95%, rgba(200, 230, 255, 0.5), transparent 60%),
-    radial-gradient(70% 60% at 0% 100%, rgba(230, 215, 255, 0.5), transparent 65%),
-    linear-gradient(180deg, #f6f7fb 0%, #eef0f7 100%);
+  /* Clean solid modern tech slate canvas - no pastel mesh gradient */
+  background: #f4f5f8 !important;
   background-size: cover;
 }
 
@@ -210,7 +211,6 @@ body.board-color-appleglasspastel #header-quick-access li.current,
 .board-color-appleglasspastel#header #header-main-bar .board-header-btn.emphasis,
 .board-color-appleglasspastel#header-quick-access li.current {
   background: var(--agp-primary) !important;
-  background: linear-gradient(180deg, #6b76e5 0%, #5e6ad2 100%) !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), var(--agp-shadow-pill) !important;
   color: #fff !important;
@@ -320,7 +320,7 @@ body.board-color-appleglasspastel button.primary,
 body.board-color-appleglasspastel input.primary,
 body.board-color-appleglasspastel input[type="submit"].primary,
 body.board-color-appleglasspastel .sidebar .sidebar-content .sidebar-btn {
-  background: linear-gradient(180deg, #6b76e5 0%, #5e6ad2 100%) !important;
+  background: var(--agp-primary) !important;
   border: 1px solid rgba(255, 255, 255, 0.18) !important;
   border-radius: 999px !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), var(--agp-shadow-pill);
@@ -335,7 +335,7 @@ body.board-color-appleglasspastel button.primary:hover,
 body.board-color-appleglasspastel input.primary:hover,
 body.board-color-appleglasspastel input[type="submit"].primary:hover,
 body.board-color-appleglasspastel .sidebar .sidebar-content .sidebar-btn:hover {
-  background: linear-gradient(180deg, #7883ee 0%, #6b76e5 100%) !important;
+  background: var(--agp-primary-hover) !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 20px rgba(94, 106, 210, 0.38);
 }
 
@@ -367,11 +367,12 @@ body.board-color-appleglasspastel .transition-spring {
 }
 
 body.board-color-appleglasspastel .title-gradient {
-  background: linear-gradient(90deg, #1d1d1f 0%, #4650b8 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  color: var(--agp-heading) !important;
+  font-weight: 700;
 }
 
 body.board-color-appleglasspastel .motion-pulse,

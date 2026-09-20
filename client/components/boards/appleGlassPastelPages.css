@@ -41,7 +41,7 @@ body.board-color-appleglasspastel .boards-left-menu .menu-item.active a,
 body.board-color-appleglasspastel .boards-left-menu .menu-item.active a:hover,
 body.board-color-appleglasspastel .workspace-node.active > .workspace-node-content .js-select-space,
 body.board-color-appleglasspastel .workspace-node.active > .workspace-node-content:hover .js-select-space {
-  background: linear-gradient(180deg, #6b76e5 0%, #5e6ad2 100%) !important;
+  background: var(--agp-primary) !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), var(--agp-shadow-pill);
   color: #fff;
 }
@@ -51,12 +51,12 @@ body.board-color-appleglasspastel .boards-right-grid {
 }
 
 body.board-color-appleglasspastel .boards-right-grid > .admin-pane-title {
-  background: linear-gradient(90deg, #1d1d1f 0%, #4650b8 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  font-weight: 800;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: var(--agp-heading, #0f172a) !important;
+  -webkit-text-fill-color: initial !important;
+  font-weight: 700;
 }
 
 body.board-color-appleglasspastel .board-list {
@@ -132,14 +132,11 @@ body.board-color-appleglasspastel .js-star-board:hover i {
 body.board-color-appleglasspastel .board-list > li.js-board .js-open-board > .board-list-thumbnail {
   aspect-ratio: 16 / 9;
   align-items: center;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(147, 197, 253, 0.9), transparent 44%),
-    radial-gradient(circle at 82% 18%, rgba(251, 207, 232, 0.92), transparent 46%),
-    linear-gradient(135deg, rgba(224, 231, 255, 0.96), rgba(243, 232, 255, 0.94));
+  background: #eef1f6;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.82);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -149,10 +146,11 @@ body.board-color-appleglasspastel .board-list > li.js-board .js-open-board > .bo
 
 body.board-color-appleglasspastel .board-list > li.js-board .board-list-thumbnail-placeholder {
   align-items: center;
-  background: rgba(255, 255, 255, 0.46);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 16px;
-  color: rgba(37, 99, 235, 0.72);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  color: var(--agp-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   display: flex;
   font-size: 28px;
   height: 54px;
@@ -317,7 +315,7 @@ body.board-color-appleglasspastel .table-page-table {
 /* Table Header */
 body.board-color-appleglasspastel .table-page-table thead th,
 body.board-color-appleglasspastel .setting-content .content-body .main-body table:not(.table-page-table) th {
-  background: linear-gradient(180deg, rgba(248, 249, 253, 0.96) 0%, rgba(240, 242, 248, 0.96) 100%);
+  background: #f8fafc;
   color: var(--agp-muted);
   font-size: 11.5px;
   font-weight: 700;
@@ -468,7 +466,7 @@ body.board-color-appleglasspastel .table-page-controls select.js-table-page-filt
 body.board-color-appleglasspastel .table-page-controls button.js-table-page-action {
   height: 38px;
   border-radius: 12px;
-  background: linear-gradient(180deg, #6b76e5 0%, #5e6ad2 100%);
+  background: var(--agp-primary);
   color: #fff;
   font-weight: 600;
   font-size: 13px;
@@ -479,6 +477,7 @@ body.board-color-appleglasspastel .table-page-controls button.js-table-page-acti
 }
 
 body.board-color-appleglasspastel .table-page-controls button.js-table-page-action:hover {
+  background: var(--agp-primary-hover);
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(94, 106, 210, 0.32);
 }
@@ -551,7 +550,7 @@ body:has(.board-wrapper.board-color-appleglasspastel) .table-view-search-box but
   height: 38px;
   border: none;
   border-radius: 0 12px 12px 0;
-  background: linear-gradient(180deg, #6b76e5 0%, #5e6ad2 100%);
+  background: var(--agp-primary);
   color: #fff;
   font-weight: 600;
   font-size: 13px;
@@ -564,7 +563,7 @@ body:has(.board-wrapper.board-color-appleglasspastel) .table-view-search-box but
 
 body.board-color-appleglasspastel .table-view-search-box button:hover,
 body:has(.board-wrapper.board-color-appleglasspastel) .table-view-search-box button:hover {
-  background: linear-gradient(180deg, #7883ee 0%, #6b76e5 100%);
+  background: var(--agp-primary-hover);
   box-shadow: 0 6px 18px rgba(94, 106, 210, 0.32);
 }
 
@@ -616,7 +615,7 @@ body:has(.board-wrapper.board-color-appleglasspastel) table.my-cards-board-table
 body.board-color-appleglasspastel table.my-cards-board-table thead,
 body:has(.board-wrapper.board-color-appleglasspastel) table.my-cards-board-table thead {
   border: 0 !important;
-  background: linear-gradient(180deg, rgba(248, 249, 253, 0.95) 0%, rgba(240, 242, 248, 0.95) 100%) !important;
+  background: #f8fafc !important;
 }
 
 body.board-color-appleglasspastel table.my-cards-board-table thead th,
@@ -988,7 +987,7 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
 }
 
 .board-color-appleglasspastel.board-wrapper .card-details .checklist-progress-bar .checklist-progress-fill {
-  background: linear-gradient(to right, var(--agp-primary), #178563);
+  background: var(--agp-primary);
   height: 100%;
   border-radius: 999px;
   transition: width 0.3s var(--agp-spring);

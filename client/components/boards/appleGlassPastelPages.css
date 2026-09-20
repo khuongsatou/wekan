@@ -704,6 +704,12 @@ body:has(.board-wrapper.board-color-appleglasspastel) .my-cards-board-badge {
   padding-bottom: 6px;
 }
 
+.board-color-appleglasspastel.board-wrapper .list:not(.list-collapsed):not(.mobile-view) {
+  width: max(var(--list-width, 285px), 285px) !important;
+  min-width: max(var(--list-width, 285px), 285px) !important;
+  max-width: max(var(--list-width, 285px), 285px) !important;
+}
+
 .board-color-appleglasspastel.board-wrapper .swimlane .swimlane-header-wrap {
   background: rgba(255, 255, 255, 0.88);
   border: 1px solid var(--agp-border);
@@ -1020,6 +1026,7 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
   flex-wrap: wrap;
   gap: 4px;
   margin-bottom: 6px;
+  margin-inline-end: 0 !important;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-label {
@@ -1033,6 +1040,11 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
   align-items: center;
   box-shadow: none;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .minicard-labels-no-text .minicard-label {
@@ -1047,6 +1059,7 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
   flex-direction: column;
   gap: 4px;
   margin-bottom: 8px;
+  margin-inline-end: 0 !important;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .minicard-custom-field {
@@ -1064,42 +1077,62 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   margin-top: 6px;
   margin-bottom: 4px;
+  margin-inline-end: 0 !important;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-date {
   border-radius: 6px;
   font-size: 0.725rem;
   font-weight: 600;
-  padding: 2px 7px;
-  display: inline-flex;
+  padding: 2.5px 8px;
+  display: inline-flex !important;
   align-items: center;
   gap: 4px;
   border: 1px solid rgba(226, 232, 240, 0.9);
   background: #f8fafc;
   color: #475569;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
   transition: all 0.15s var(--agp-spring);
 }
 
+.board-color-appleglasspastel.board-wrapper .minicard .card-date time {
+  white-space: nowrap !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .board-color-appleglasspastel.board-wrapper .minicard .card-date.due-date {
-  background-color: var(--agp-warning-bg);
-  border-color: rgba(218, 138, 0, 0.3);
-  color: var(--agp-warning-text);
+  background-color: var(--agp-warning-bg) !important;
+  border-color: rgba(218, 138, 0, 0.35) !important;
+  color: var(--agp-warning-text) !important;
 }
 
-.board-color-appleglasspastel.board-wrapper .minicard .date.due-complete .card-date.due-date {
-  background-color: var(--agp-success-bg);
-  border-color: rgba(29, 158, 117, 0.3);
-  color: var(--agp-success-text);
+.board-color-appleglasspastel.board-wrapper .minicard .card-date.due-soon {
+  background-color: var(--agp-warning-bg) !important;
+  border-color: rgba(218, 138, 0, 0.35) !important;
+  color: var(--agp-warning-text) !important;
 }
 
+.board-color-appleglasspastel.board-wrapper .minicard .card-date.overdue,
 .board-color-appleglasspastel.board-wrapper .minicard .card-date.due-date.due-overdue {
-  background-color: var(--agp-danger-bg);
-  border-color: rgba(226, 75, 74, 0.3);
-  color: var(--agp-danger-text);
+  background-color: var(--agp-danger-bg) !important;
+  border-color: rgba(226, 75, 74, 0.35) !important;
+  color: var(--agp-danger-text) !important;
   font-weight: 600;
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard .card-date.current,
+.board-color-appleglasspastel.board-wrapper .minicard .card-date.completed,
+.board-color-appleglasspastel.board-wrapper .minicard .card-date.completed-early,
+.board-color-appleglasspastel.board-wrapper .minicard .date.due-complete .card-date.due-date {
+  background-color: var(--agp-success-bg) !important;
+  border-color: rgba(29, 158, 117, 0.35) !important;
+  color: var(--agp-success-text) !important;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .badges {
@@ -1171,14 +1204,58 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
   background: #f8fafc;
   border: 1px solid rgba(226, 232, 240, 0.85);
   border-radius: 8px;
-  padding: 6px 8px;
+  padding: 8px 10px;
   margin-top: 8px;
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard .minicard-checklist .checklist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .minicard-checklist .checklist-title {
   font-size: 0.775rem;
   font-weight: 600;
   color: #334155;
+  letter-spacing: -0.01em;
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard .minicard-checklist .checklist-menu {
+  color: #94a3b8;
+  border-radius: 4px;
+  padding: 1px 4px;
+  transition: all 0.15s ease;
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard .minicard-checklist .checklist-menu:hover {
+  color: var(--agp-heading);
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard .minicard-checklist .checklist-item {
+  font-size: 0.75rem;
+  color: #475569;
+  padding: 3px 4px;
+  border-radius: 4px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard .minicard-checklist .checklist-item:hover {
+  background-color: rgba(94, 106, 210, 0.06);
+  color: #0f172a;
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard .minicard-checklist .checklist-item.is-checked {
+  color: #94a3b8;
+}
+
+.board-color-appleglasspastel.board-wrapper .minicard .minicard-checklist .checklist-item .check-box-unicode {
+  color: var(--agp-primary);
+  margin-inline-end: 4px;
 }
 
 /* Drag and drop feedback */

@@ -91,11 +91,35 @@ body.board-color-appleglasspastel .board-list > li.js-board > .board-list-item >
   box-shadow: none;
 }
 
-body.board-color-appleglasspastel .board-list > li.js-board:hover > .board-list-item,
-body.board-color-appleglasspastel .board-list .js-add-board .label:hover {
+body.board-color-appleglasspastel .board-list > li.js-board:hover > .board-list-item {
   background: rgba(255, 255, 255, 0.96) !important;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 10px 28px -4px rgba(37, 99, 235, 0.12), 0 2px 8px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-3px);
+  border-color: rgba(37, 99, 235, 0.24);
+}
+
+body.board-color-appleglasspastel .board-list .js-add-board .label {
+  border: 2px dashed rgba(37, 99, 235, 0.35) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 120px;
+  color: var(--agp-primary) !important;
+  font-weight: 600;
+  gap: 8px;
+}
+
+body.board-color-appleglasspastel .board-list .js-add-board .label:hover {
+  background: rgba(37, 99, 235, 0.06) !important;
+  border-color: var(--agp-primary) !important;
+  color: var(--agp-primary-dark) !important;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
   transform: translateY(-2px);
+}
+
+body.board-color-appleglasspastel .js-star-board.is-star-active,
+body.board-color-appleglasspastel .js-star-board.is-star-active i {
+  color: #f59e0b !important;
 }
 
 body.board-color-appleglasspastel .board-list > li.js-board .js-open-board > .board-list-thumbnail {
@@ -267,17 +291,18 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
 /* Kanban structural glass. Minicards and lists are deliberately solid-ish and do not use
  * backdrop-filter: per-card and per-list filters destroy drag and scroll latency. */
 .board-color-appleglasspastel.board-wrapper .list {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.84);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(229, 231, 235, 0.75);
   border-radius: var(--agp-radius-panel);
-  box-shadow: var(--agp-shadow-island);
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
   /* Apple Glass lists are visual panels, so they need the same breathing room
    * as the cards inside them. Keep this non-important so mobile-mode can still
    * collapse lists to full-width stacked sprint panels. */
   margin-block: 10px;
   margin-inline: 8px;
+  padding-bottom: 6px;
 }
 
 .board-color-appleglasspastel.board-wrapper .swimlane .swimlane-header-wrap {
@@ -287,7 +312,36 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
 }
 
 .board-color-appleglasspastel.board-wrapper .list-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.85);
   border-radius: var(--agp-radius-panel) var(--agp-radius-panel) 0 0;
+  padding: 12px 14px;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.board-color-appleglasspastel.board-wrapper .list-header .list-header-name {
+  font-weight: 700;
+  font-size: 0.925rem;
+  color: var(--agp-heading);
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.board-color-appleglasspastel.board-wrapper .list-header-card-count {
+  background: var(--agp-primary-faint);
+  color: var(--agp-primary);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.725rem;
+  font-weight: 600;
+}
+
+.board-color-appleglasspastel.board-wrapper .list-body {
+  padding: 8px 10px;
 }
 
 /* Keep one, visibly breathable gap between adjacent painted cards. */
@@ -296,26 +350,27 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(229, 231, 235, 0.72);
+  background: #ffffff;
+  border: 1px solid rgba(229, 231, 235, 0.85);
   border-radius: var(--agp-radius-card);
-  box-shadow: var(--agp-shadow-card);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 3px 8px -1px rgba(15, 23, 42, 0.02);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   /* `.minicard-wrapper` already owns the drag/drop spacing. The legacy
    * desktop/mobile rules add another bottom margin to the painted card, which
    * made the visible gap 16-17px. Keep spacing on one structural layer. */
   margin-bottom: 0 !important;
+  padding: 10px 12px;
   transition: background-color 0.18s ease, border-color 0.18s ease,
     box-shadow 0.18s ease, transform 0.18s var(--agp-spring);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard:hover:not(.minicard-composer),
 .board-color-appleglasspastel.board-wrapper .draggable-hover-card .minicard {
-  background: #fff;
-  border-color: rgba(37, 99, 235, 0.24);
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
-  transform: translateY(-1px);
+  background: #ffffff;
+  border-color: rgba(37, 99, 235, 0.28);
+  box-shadow: 0 6px 18px -2px rgba(37, 99, 235, 0.1), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  transform: translateY(-2px);
 }
 
 .board-color-appleglasspastel.board-wrapper .is-selected .minicard {
@@ -327,16 +382,29 @@ body.board-color-appleglasspastel .setting-content .content-body .main-body tabl
 
 .board-color-appleglasspastel.board-wrapper .list-body .open-minicard-composer,
 .board-color-appleglasspastel.board-wrapper .list.list-composer .open-list-composer {
-  border: 1px dashed rgba(37, 99, 235, 0.28);
-  border-radius: var(--agp-radius-control);
-  color: var(--agp-muted);
+  border: 1px dashed rgba(37, 99, 235, 0.32);
+  border-radius: 10px;
+  color: var(--agp-primary);
+  background: rgba(255, 255, 255, 0.55);
+  padding: 8px 12px;
+  margin: 6px 2px 2px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.16s ease;
 }
 
 .board-color-appleglasspastel.board-wrapper .list-body .open-minicard-composer:hover,
 .board-color-appleglasspastel.board-wrapper .list.list-composer .open-list-composer:hover {
-  background: var(--agp-primary-soft);
+  background: rgba(37, 99, 235, 0.08);
   border-color: var(--agp-primary);
   color: var(--agp-primary-dark);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
 }
 
 .board-color-appleglasspastel.board-wrapper .card-details,
@@ -356,68 +424,88 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
 
 /* Card visual hierarchy & modern badges */
 .board-color-appleglasspastel.board-wrapper .minicard .minicard-title {
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--agp-heading);
-  line-height: 1.4;
+  line-height: 1.45;
+  margin-bottom: 6px;
+  letter-spacing: -0.005em;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-label {
-  border-radius: 999px;
-  font-weight: 500;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  margin-inline-end: 4px;
+  margin-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .badges {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px;
-  margin-top: 6px;
+  gap: 5px;
+  margin-top: 8px;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .badges .badge {
   border-radius: 6px;
   padding: 2px 6px;
-  background: rgba(15, 23, 42, 0.05);
-  color: var(--agp-muted);
+  background: #f1f5f9;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  color: #475569;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.75rem;
+  font-size: 0.725rem;
   font-weight: 500;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  line-height: 1.25;
+  transition: all 0.15s ease;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .badges .badge.is-finished {
   background: var(--agp-success-bg);
+  border-color: rgba(16, 185, 129, 0.2);
   color: var(--agp-success-text);
+  font-weight: 600;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .badges .badge:hover {
-  background: rgba(15, 23, 42, 0.09);
+  background: #e2e8f0;
   color: var(--agp-heading);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-date {
   border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: 0.725rem;
   font-weight: 500;
   padding: 2px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid transparent;
   transition: background-color 0.15s ease;
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-date.due-date {
   background-color: var(--agp-warning-bg);
+  border-color: rgba(245, 158, 11, 0.25);
   color: var(--agp-warning-text);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .date.due-complete .card-date.due-date {
   background-color: var(--agp-success-bg);
+  border-color: rgba(16, 185, 129, 0.25);
   color: var(--agp-success-text);
 }
 
 .board-color-appleglasspastel.board-wrapper .minicard .card-date.due-date.due-overdue {
   background-color: var(--agp-danger-bg);
+  border-color: rgba(239, 68, 68, 0.25);
   color: var(--agp-danger-text);
   font-weight: 600;
 }
@@ -454,32 +542,6 @@ body.board-color-appleglasspastel .page-sidebar.sidebar {
   border: 2px dashed rgba(37, 99, 235, 0.35) !important;
   border-radius: var(--agp-radius-card);
   box-shadow: inset 0 2px 6px rgba(37, 99, 235, 0.04);
-}
-
-/* Sticky List Header & Badges — solid surface without per-list backdrop blur */
-.board-color-appleglasspastel.board-wrapper .list-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.96);
-  border-bottom: 1px solid rgba(229, 231, 235, 0.85);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.board-color-appleglasspastel.board-wrapper .list-header .list-header-name {
-  font-weight: 700;
-  color: var(--agp-heading);
-  letter-spacing: -0.01em;
-}
-
-.board-color-appleglasspastel.board-wrapper .list-header-card-count {
-  background: var(--agp-primary-faint);
-  color: var(--agp-primary-dark);
-  border-radius: 999px;
-  padding: 2px 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
 }
 
 /* Card Details Modal Polish */

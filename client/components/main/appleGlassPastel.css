@@ -199,6 +199,19 @@ body.board-color-appleglasspastel #header-quick-access li.current * {
   color: #fff !important;
 }
 
+body.board-color-appleglasspastel #header .board-header-btn.js-filter-active,
+.board-color-appleglasspastel#header .board-header-btn.js-filter-active {
+  background: #dbeafe !important;
+  border-color: rgba(37, 99, 235, 0.35) !important;
+  color: #1d4ed8 !important;
+  font-weight: 600;
+}
+
+body.board-color-appleglasspastel #header .board-header-btn.js-filter-active *,
+.board-color-appleglasspastel#header .board-header-btn.js-filter-active * {
+  color: #1d4ed8 !important;
+}
+
 .board-color-appleglasspastel#header .board-header-btn.active,
 .board-color-appleglasspastel#header .setting-header-btn.active,
 .board-color-appleglasspastel#header #header-main-bar .board-header-btn.emphasis,
